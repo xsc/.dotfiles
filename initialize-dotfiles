@@ -1,18 +1,35 @@
 #!/bin/bash
 
 BASE=$(cd $(dirname "$0") && pwd)
+FORCE="no"
 
-for src in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "initialize-dotfiles"); do
+while [[ "$#" > 0 ]]; do
+    case "$1" in
+        "--force")
+            FORCE="yes";
+            shift;;
+        *)
+            echo "unknown option: $1" 1>&2;
+            exit 1;;
+    esac
+done
+
+for f in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "initialize-dotfiles"); do
 
     # Destination
-    dir=$(dirname "$src")
-    if [[ "$dir" == "." ]]; then dst=".$(basename "$src")";
-    else dst=".${dir:2}/$(basename "$src")"; fi
+    dir=$(dirname "$f")
+    if [[ "$dir" == "." ]]; then dst=".$(basename "$f")";
+    else dst=".${dir:2}/$(basename "$f")"; fi
     dst="$HOME/$dst";
-    src="$BASE/${src:2}";
+    src="$BASE/${f:2}";
 
     # Overwrite?
     mkdir -p "$(dirname "$dst")"
+
+    if [[ "$FORCE" == "yes" ]]; then
+        rm -f "$dst";
+    fi
+
     if [ -e "$dst" ]; then
         echo -n "Overwrite '$dst'? [y/n] " 1>&2;
         read line
@@ -28,11 +45,12 @@ for src in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "ini
     fi
 
     # Link it!
-    echo -n "$src -> $dst ..."
-    ln -s "$src" "$dst"
+    echo -n "creating symbolic link to $f ... "
+    ln -s "$src" "$dst" >& /dev/null
     if [[ "$?" == "0" ]]; then
         echo "OK."
     else
+        echo "FAILED."
         exit 1;
     fi
 done
