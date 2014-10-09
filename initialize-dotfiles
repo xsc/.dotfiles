@@ -1,0 +1,34 @@
+#!/bin/bash
+
+BASE=$(cd $(dirname "$0") && pwd)
+
+for src in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "initialize-dotfiles"); do
+
+    # Destination
+    dir=$(basename $(dirname "$src"))
+    if [[ "$dir" == "." ]]; then
+        dst=".$(basename "$src")";
+    else
+        dst=".${dir}/$(basename "$src")";
+    fi
+    dst="$HOME/$dst";
+
+    # Overwrite?
+    mkdir -p "$(dirname "$dst")"
+    if [ -e "$dst" ]; then
+        echo -n "Overwrite '$dst'? [y/n] " 1>&2;
+        read line
+        case "$line" in
+            "y")
+                rm "$dst";
+                ;;
+            "q")
+                break;;
+            *)
+                continue;;
+        esac
+    fi
+
+    # Link it!
+    ln -s "$BASE/$src" "$dst"
+done
