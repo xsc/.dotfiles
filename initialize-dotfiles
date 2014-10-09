@@ -5,13 +5,11 @@ BASE=$(cd $(dirname "$0") && pwd)
 for src in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "initialize-dotfiles"); do
 
     # Destination
-    dir=$(basename $(dirname "$src"))
-    if [[ "$dir" == "." ]]; then
-        dst=".$(basename "$src")";
-    else
-        dst=".${dir}/$(basename "$src")";
-    fi
+    dir=$(dirname "$src")
+    if [[ "$dir" == "." ]]; then dst=".$(basename "$src")";
+    else dst=".${dir:2}/$(basename "$src")"; fi
     dst="$HOME/$dst";
+    src="$BASE/${src:2}";
 
     # Overwrite?
     mkdir -p "$(dirname "$dst")"
@@ -30,5 +28,11 @@ for src in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "ini
     fi
 
     # Link it!
-    ln -s "$BASE/$src" "$dst"
+    echo -n "$src -> $dst ..."
+    ln -s "$src" "$dst"
+    if [[ "$?" == "0" ]]; then
+        echo "OK."
+    else
+        exit 1;
+    fi
 done
