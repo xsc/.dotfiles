@@ -81,7 +81,7 @@ let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd']
 " Clojure
 function! SetupClojure()
     " vim-fireplace + vim-sexp
-    nmap <buffer> cee :Require<CR>
+    nmap <buffer> cee :%Eval<CR>
     nmap <buffer> css :Eval<CR>
     nmap <buffer> ctt :RunTests<CR>
     nmap <buffer> cpc :cclose<CR>
