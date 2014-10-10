@@ -62,6 +62,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle guns/vim-clojure-static
 "bundle guns/vim-sexp
 "bundle juvenn/mustache.vim
+"bundle Lokaltog/vim-easymotion
 "bundle pangloss/vim-javascript
 "bundle Shougo/unite
 "bundle Shougo/vimproc.vim
@@ -115,3 +116,9 @@ nnoremap <leader>ug :<C-U>Unite -no-split -buffer-name=grep grep:.:-iRHn<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gc :Gcommit<CR>
+
+" EasyMotion
+let g:EasyMotion_smartcase = 1
+nmap s <plug>(easymotion-s2)
+map <leader>j <plug>(easymotion-j)
+map <leader>k <plug>(easymotion-k)
