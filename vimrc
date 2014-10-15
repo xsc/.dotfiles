@@ -65,6 +65,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle Lokaltog/vim-easymotion
 "bundle pangloss/vim-javascript
 "bundle Shougo/unite
+"bundle Shougo/neomru
 "bundle Shougo/vimproc.vim
 "bundle tpope/vim-dispatch
 "bundle tpope/vim-fireplace
@@ -76,7 +77,7 @@ nnoremap <C-H> <C-W><C-H>
 " Appearance
 set background=dark
 silent! colorscheme solarized
-let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd']
+let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'grep', 'search']
 
 " Clojure
 function! SetupClojure()
@@ -87,6 +88,7 @@ function! SetupClojure()
     nmap <buffer> cpc :cclose<CR>
     nmap <buffer> caa :A<CR>
     nmap <buffer> cac :AV<CR>
+    nmap <buffer> crc :let g:leiningen_no_auto_repl=1<CR>:Connect nrepl://
     nmap <buffer> <Leader>S  <Leader>@
 
     " vim-clojure-static
@@ -104,13 +106,16 @@ autocmd FileType clojure :call SetupClojure()
 let g:unite_winheight = 10
 let g:unite_source_history_yank_enable = 1
 let g:unite_split_rule = 'botright'
-nnoremap <C-P>     :<C-U>Unite -start-insert file_rec/async -default-action=vsplit<CR>
-nnoremap <leader>ut :<C-U>Unite -start-insert file_rec/async -default-action=tabopen<CR>
-nnoremap <leader>uf :<C-U>Unite -start-insert file -default-action=vsplit<CR>
-nnoremap <leader>ur :<C-U>Unite -start-insert file_mru -default-action=vsplit<CR>
-nnoremap <leader>ue :<C-U>Unite -no-split -buffer-name=buffer buffer<CR>
-nnoremap <leader>uy :<C-U>Unite -no-split -buffer-name=yank   history/yank<CR>
-nnoremap <leader>ug :<C-U>Unite -no-split -buffer-name=grep grep:.:-iRHn<CR>
+let g:unite_source_grep_command = 'ack'
+let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
+let g:unite_source_grep_recursive_opt = ''
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#source('file_rec/async','sorters','sorter_rank')
+nnoremap <C-P>      :<C-U>Unite -start-insert file_rec/async -default-action=vsplit<CR>
+nnoremap <leader>uu :<C-U>Unite -buffer-name=recent file_mru -default-action=vsplit<CR>
+nnoremap <leader>un :<C-U>Unite -start-insert file/new -default-action=vsplit<CR>
+nnoremap <leader>ug :<C-U>Unite -no-split -buffer-name=grep grep:.:<CR>
 
 " Fugitive
 nnoremap <leader>gs :Gstatus<CR>
