@@ -127,3 +127,5 @@
 	whitespace = trailing-space,space-before-tab
 [apply]
 	whitespace = fix
+[web]
+	browser = open
