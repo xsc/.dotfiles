@@ -44,7 +44,7 @@ plugins=(git homebrew history tmux gpg-agent lein fasd)
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=/usr/local/bin:$PATH:/usr/bin:/bin:/usr/sbin:/sbin:~/.bin
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH:/usr/bin:/bin:/usr/sbin:/sbin:~/.bin
 export JAVA_HOME=$(/usr/libexec/java_home 2> /dev/null)
 
 # Clear
