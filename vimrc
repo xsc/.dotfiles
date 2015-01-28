@@ -123,7 +123,7 @@ call unite#custom#source('file_rec/async','sorters','sorter_rank')
 nnoremap <C-P>      :<C-U>Unite -start-insert file_rec/async -default-action=vsplit<CR>
 nnoremap <leader>uu :<C-U>Unite -buffer-name=recent file_mru -default-action=vsplit<CR>
 nnoremap <leader>un :<C-U>Unite -start-insert file/new -default-action=vsplit<CR>
-nnoremap <leader>ug :<C-U>Unite -no-split -buffer-name=grep grep:.:<CR>
+nnoremap <leader>ug :<C-U>Unite -buffer-name=grep grep:.: -default-action=vsplit<CR>
 
 " Fugitive
 nnoremap <leader>gs :Gstatus<CR>
