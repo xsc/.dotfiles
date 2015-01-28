@@ -107,9 +107,16 @@ autocmd FileType clojure :call SetupClojure()
 let g:unite_winheight = 10
 let g:unite_source_history_yank_enable = 1
 let g:unite_split_rule = 'botright'
-let g:unite_source_grep_command = 'ack'
-let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
-let g:unite_source_grep_recursive_opt = ''
+if executable('pt')
+    let g:unite_source_grep_command = 'pt'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+    let g:unite_source_grep_recursive_opt = ''
+    let g:unite_source_grep_encoding = 'utf-8'
+elseif executable('ack')
+    let g:unite_source_grep_command = 'ack'
+    let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
+    let g:unite_source_grep_recursive_opt = ''
+endif
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
