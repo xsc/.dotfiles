@@ -73,6 +73,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle tpope/vim-leiningen
 "bundle tpope/vim-projectionist
 "bundle tpope/vim-sexp-mappings-for-regular-people
+"bundle sjl/gundo
 
 " Appearance
 set background=dark
@@ -127,3 +128,6 @@ let g:EasyMotion_smartcase = 1
 nmap s <plug>(easymotion-s2)
 map <leader>j <plug>(easymotion-j)
 map <leader>k <plug>(easymotion-k)
+
+" Gundo
+nnoremap <leader>m :GundoToggle<CR>
