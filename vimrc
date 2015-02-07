@@ -138,3 +138,6 @@ map <leader>k <plug>(easymotion-k)
 
 " Gundo
 nnoremap <leader>m :GundoToggle<CR>
+
+" Markdown
+au FileType markdown :set textwidth=80
