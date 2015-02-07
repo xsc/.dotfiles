@@ -63,6 +63,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle guns/vim-clojure-static
 "bundle guns/vim-sexp
 "bundle juvenn/mustache.vim
+"bundle kien/rainbow_parentheses.vim
 "bundle Lokaltog/vim-easymotion
 "bundle pangloss/vim-javascript
 "bundle Shougo/unite
@@ -73,6 +74,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle tpope/vim-fugitive
 "bundle tpope/vim-leiningen
 "bundle tpope/vim-projectionist
+"bundle tpope/vim-repeat
 "bundle tpope/vim-sexp-mappings-for-regular-people
 "bundle sjl/gundo
 
@@ -105,6 +107,32 @@ function! SetupClojure()
         let g:clojure_align_multiline_strings = 1
         let g:clojure_loaded = 1
     endif
+
+    " rainbow
+    RainbowParenthesesActivate
+    RainbowParenthesesLoadBraces
+    RainbowParenthesesLoadRound
+    RainbowParenthesesLoadSquare
+    setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
+
+    let g:rbpt_colorpairs = [
+                \ ['darkyellow',  'RoyalBlue3'],
+                \ ['darkgreen',   'SeaGreen3'],
+                \ ['darkcyan',    'DarkOrchid3'],
+                \ ['Darkblue',    'firebrick3'],
+                \ ['DarkMagenta', 'RoyalBlue3'],
+                \ ['darkred',     'SeaGreen3'],
+                \ ['darkyellow',  'DarkOrchid3'],
+                \ ['darkgreen',   'firebrick3'],
+                \ ['darkcyan',    'RoyalBlue3'],
+                \ ['Darkblue',    'SeaGreen3'],
+                \ ['DarkMagenta', 'DarkOrchid3'],
+                \ ['Darkblue', 'firebrick3'],
+                \ ['darkcyan', 'SeaGreen3'],
+                \ ['darkgreen', 'RoyalBlue3'],
+                \ ['darkyellow', 'DarkOrchid3'],
+                \ ['darkred', 'firebrick3'],
+                \ ]
 endfu
 autocmd BufNewFile,BufRead *.cljx set filetype=clojure
 autocmd FileType clojure :call SetupClojure()
