@@ -56,6 +56,7 @@ nnoremap <C-H> <C-W><C-H>
 
 " Microbe Bundles
 "bundle altercation/vim-colors-solarized
+"bundle airblade/vim-gitgutter
 "bundle bling/vim-airline
 "bundle bronson/vim-trailing-whitespace
 "bundle christoomey/vim-tmux-navigator
@@ -79,6 +80,11 @@ nnoremap <C-H> <C-W><C-H>
 set background=dark
 silent! colorscheme solarized
 let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'grep', 'search']
+
+if (exists('+colorcolumn'))
+    set colorcolumn=80
+    highlight ColorColumn ctermbg=0
+endif
 
 " Clojure
 function! SetupClojure()
@@ -129,6 +135,12 @@ nnoremap <leader>ug :<C-U>Unite -buffer-name=grep grep:.: -default-action=vsplit
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gc :Gcommit<CR>
+
+" GitGutter
+highlight SignColumn      ctermbg=0
+highlight GitGutterAdd    ctermbg=0 ctermfg=2
+highlight GitGutterChange ctermbg=0 ctermfg=3
+highlight GitGutterDelete ctermbg=0 ctermfg=1
 
 " EasyMotion
 let g:EasyMotion_smartcase = 1
