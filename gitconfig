@@ -19,6 +19,7 @@
 
     cl = clone
     up = pull --ff-only --all -p
+    upr = pull --rebase --all -p
 
     ci = commit
     cm = commit -m
