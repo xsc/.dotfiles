@@ -161,9 +161,13 @@ nnoremap <leader>un :<C-U>Unite -start-insert file/new -default-action=vsplit<CR
 nnoremap <leader>ug :<C-U>Unite -buffer-name=grep grep:.: -default-action=vsplit<CR>
 
 " Fugitive
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gm :Gmove<CR>
+nnoremap <leader>gr :Gread<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gw :Gwrite<CR>
 
 " GitGutter
 nnoremap <leader>gg :GitGutterToggle<CR>
