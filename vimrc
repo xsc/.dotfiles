@@ -166,6 +166,7 @@ nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gc :Gcommit<CR>
 
 " GitGutter
+nnoremap <leader>gg :GitGutterToggle<CR>
 highlight SignColumn      ctermbg=0
 highlight GitGutterAdd    ctermbg=0 ctermfg=2
 highlight GitGutterChange ctermbg=0 ctermfg=3
