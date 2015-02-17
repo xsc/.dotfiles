@@ -35,14 +35,16 @@
 
     cleanup = "!git branch --merged | grep -v '^  master$' | grep -v '^\\*' | xargs git branch -d"
     cleanup-remote = "!f() {\
-        local x=\"$1\";\
+        local remote=\"$1\";\
+        local x=\"$2\";\
+        if [ -z \"$remote\" ]; then remote='origin'; fi;\
         if [ -z \"$x\" ]; then x='ys'; fi;\
         git branch -r --merged|\
-        grep '^  origin/'|\
-        grep -v '^  origin/master$'|\
-        grep -F \"/$x/\"|\
-        sed 's/^  origin\\///'|\
-        xargs git push origin --delete;}; f"
+        grep \"^  $remote/\"|\
+        grep -v \"^  $remote/master\\$\"|\
+        grep \"[/ ]$x/\"|\
+        sed \"s/^  $remote\\///\"|\
+        xargs git push \"$remote\" --delete;}; f"
     br = branch
     brm = branch --no-merged
     brs = for-each-ref --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)" refs/heads
