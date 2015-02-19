@@ -165,6 +165,7 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gm :Gmove<CR>
+nnoremap <leader>gp :Dispatch Git push<CR>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gw :Gwrite<CR>
