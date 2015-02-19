@@ -163,7 +163,7 @@ nnoremap <leader>ug :<C-U>Unite -buffer-name=grep grep:.: -default-action=vsplit
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gc :Gcommit<CR>
-nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gm :Gmove<CR>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gs :Gstatus<CR>
