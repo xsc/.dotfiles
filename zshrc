@@ -88,4 +88,6 @@ export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
 export DOCKER_TLS_VERIFY=1
 
 # istheinternetonfire
-host -t txt istheinternetonfire.com | cut -f 2 -d '"' | cowsay -f moose
+if [ $[$RANDOM % 100] -lt 10 ]; then
+    host -t txt istheinternetonfire.com | cut -f 2 -d '"' | cowsay -f moose
+fi
