@@ -56,6 +56,15 @@ bindkey '^@' zsh_clear
 alias rma='rm *'
 alias b2d='boot2docker'
 
+# tmux-up
+function tu() {
+    local profile="$1"
+    if [ -z "$profile" ]; then return 1; fi
+    local p="$HOME/.tmux/$profile.conf"
+    if [ ! -s "$p" ]; then return 1; fi
+    tmux-up "$p"
+}
+
 # sshto
 alias sshto='/git/sf/sf_scripts/sshto'
 alias scp-pngs='/git/sf/sf_scripts/scp-pngs'
