@@ -39,6 +39,7 @@ let g:mapleader=","
 nnoremap <C-@> :nohl<CR>
 nnoremap <F6> :set number!<CR>
 noremap <leader>ss :w !sudo tee % > /dev/null<CR>
+noremap q: :q
 
 " Force my Hand
 inoremap jj <ESC>
