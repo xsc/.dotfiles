@@ -21,6 +21,7 @@
     up = pull --ff-only --all -p
     upr = pull --rebase --all -p
     ffs = "!git upr && git push"
+    lgtm = -c core.editor=true merge -S --no-ff
 
     ci = commit
     cm = commit -m
