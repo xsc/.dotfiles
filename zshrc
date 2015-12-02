@@ -52,6 +52,16 @@ zsh_clear() { command clear; zle redisplay; }
 zle -N zsh_clear
 bindkey '^@' zsh_clear
 
+# Vim
+bindkey -v
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+bindkey -M viins 'jj' vi-cmd-mode
+
 # Shortcuts
 alias rma='rm *'
 alias b2d='boot2docker'
