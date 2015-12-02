@@ -31,6 +31,7 @@
     caa = commit -a --amend -C HEAD
     filelog = log -u
     fl = log -u
+    sh = show --format=fuller
 
     ai = add --interactive
     co = checkout
