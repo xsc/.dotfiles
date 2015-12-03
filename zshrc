@@ -50,7 +50,6 @@ export JAVA_HOME=$(/usr/libexec/java_home 2> /dev/null)
 # Clear
 zsh_clear() { command clear; zle redisplay; }
 zle -N zsh_clear
-bindkey '^@' zsh_clear
 
 # Vim
 bindkey -v
@@ -61,6 +60,7 @@ bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
 bindkey '^r' history-incremental-search-backward
 bindkey -M viins 'jj' vi-cmd-mode
+bindkey -M viins '^@' zsh_clear
 
 # Shortcuts
 alias rma='rm *'
