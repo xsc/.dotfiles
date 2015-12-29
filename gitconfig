@@ -22,6 +22,7 @@
     upr = pull --rebase --all -p
     ffs = "!git upr && git push"
     lgtm = -c core.editor=true merge -S --no-ff
+    rebase-date = rebase --ignore-date
 
     ci = commit
     cm = commit -m
