@@ -56,28 +56,31 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " Microbe Bundles
-"bundle altercation/vim-colors-solarized
 "bundle airblade/vim-gitgutter
+"bundle altercation/vim-colors-solarized
 "bundle bling/vim-airline
 "bundle bronson/vim-trailing-whitespace
 "bundle christoomey/vim-tmux-navigator
+"bundle ekalinin/Dockerfile
 "bundle guns/vim-clojure-static
 "bundle guns/vim-sexp
 "bundle juvenn/mustache.vim
 "bundle kien/rainbow_parentheses.vim
+"bundle lambdatoast/elm.vim
 "bundle Lokaltog/vim-easymotion
 "bundle pangloss/vim-javascript
-"bundle Shougo/unite
 "bundle Shougo/neomru
+"bundle Shougo/unite
 "bundle Shougo/vimproc.vim
+"bundle sjl/gundo
 "bundle tpope/vim-dispatch
 "bundle tpope/vim-fireplace
 "bundle tpope/vim-fugitive
-"bundle tpope/vim-leiningen
+"bundle tpope/vim-markdown
 "bundle tpope/vim-projectionist
 "bundle tpope/vim-repeat
+"bundle tpope/vim-salve
 "bundle tpope/vim-sexp-mappings-for-regular-people
-"bundle sjl/gundo
 
 " Appearance
 set background=dark
@@ -108,6 +111,8 @@ function! SetupClojure()
         let g:clojure_align_multiline_strings = 1
         let g:clojure_loaded = 1
     endif
+
+    let g:salve_auto_start_repl = 1
 
     " rainbow
     RainbowParenthesesActivate
