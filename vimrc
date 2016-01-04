@@ -20,7 +20,6 @@ set bs=2
 set whichwrap+=<,>,[,]
 set noeol
 set scrolloff=3
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
 set secure
 set exrc
 set backupdir=~/.vim/backups
@@ -29,6 +28,11 @@ if exists("&undodir")
     set undodir=~/.vim/undo
 endif
 set clipboard=unnamed
+
+" Characters
+set lcs=tab:▸\ ,nbsp:·
+set list
+inoremap   <space>
 
 " Leader
 let mapleader=","
