@@ -198,3 +198,6 @@ nnoremap <leader>m :GundoToggle<CR>
 
 " Markdown
 au FileType markdown :set textwidth=80
+
+" Paste
+set pastetoggle=<leader>pp
