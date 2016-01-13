@@ -69,9 +69,9 @@ nnoremap <C-H> <C-W><C-H>
 "bundle guns/vim-clojure-static
 "bundle guns/vim-sexp
 "bundle juvenn/mustache.vim
-"bundle kien/rainbow_parentheses.vim
 "bundle lambdatoast/elm.vim
 "bundle Lokaltog/vim-easymotion
+"bundle luochen1990/rainbow
 "bundle pangloss/vim-javascript
 "bundle Shougo/neomru
 "bundle Shougo/unite
@@ -117,35 +117,34 @@ function! SetupClojure()
     endif
 
     let g:salve_auto_start_repl = 1
-
-    " rainbow
-    RainbowParenthesesActivate
-    RainbowParenthesesLoadBraces
-    RainbowParenthesesLoadRound
-    RainbowParenthesesLoadSquare
-    setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
-
-    let g:rbpt_colorpairs = [
-                \ ['darkyellow',  'RoyalBlue3'],
-                \ ['darkgreen',   'SeaGreen3'],
-                \ ['darkcyan',    'DarkOrchid3'],
-                \ ['Darkblue',    'firebrick3'],
-                \ ['DarkMagenta', 'RoyalBlue3'],
-                \ ['darkred',     'SeaGreen3'],
-                \ ['darkyellow',  'DarkOrchid3'],
-                \ ['darkgreen',   'firebrick3'],
-                \ ['darkcyan',    'RoyalBlue3'],
-                \ ['Darkblue',    'SeaGreen3'],
-                \ ['DarkMagenta', 'DarkOrchid3'],
-                \ ['Darkblue', 'firebrick3'],
-                \ ['darkcyan', 'SeaGreen3'],
-                \ ['darkgreen', 'RoyalBlue3'],
-                \ ['darkyellow', 'DarkOrchid3'],
-                \ ['darkred', 'firebrick3'],
-                \ ]
 endfu
 autocmd BufNewFile,BufRead *.cljx set filetype=clojure
 autocmd FileType clojure :call SetupClojure()
+
+" rainbow
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+            \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+            \   'ctermfgs': ['darkyellow', 'darkred', 'darkblue', 'darkcyan', 'darkmagenta', 'darkblue'],
+            \   'operators': '_,_',
+            \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+            \   'separately': {
+            \       '*': {},
+            \       'clojure': {
+            \           'ctermfgs': ['darkred', 'darkyellow', 'darkblue', 'darkcyan', 'darkmagenta', 'darkblue'],
+            \       },
+            \       'tex': {
+            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+            \       },
+            \       'vim': {
+            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+            \       },
+            \       'html': {
+            \           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+            \       },
+            \       'css': 0,
+            \   }
+            \}
 
 " Unite
 let g:unite_winheight = 10
