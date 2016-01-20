@@ -65,12 +65,12 @@ nnoremap <C-H> <C-W><C-H>
 "bundle bling/vim-airline
 "bundle bronson/vim-trailing-whitespace
 "bundle christoomey/vim-tmux-navigator
+"bundle easymotion/vim-easymotion
 "bundle ekalinin/Dockerfile
 "bundle guns/vim-clojure-static
 "bundle guns/vim-sexp
 "bundle juvenn/mustache.vim
 "bundle lambdatoast/elm.vim
-"bundle Lokaltog/vim-easymotion
 "bundle luochen1990/rainbow
 "bundle pangloss/vim-javascript
 "bundle Shougo/neomru
@@ -189,9 +189,11 @@ highlight GitGutterDelete ctermbg=0 ctermfg=1
 
 " EasyMotion
 let g:EasyMotion_smartcase = 1
-nmap s <plug>(easymotion-s2)
-map <leader>j <plug>(easymotion-j)
-map <leader>k <plug>(easymotion-k)
+let g:EasyMotion_do_mapping = 0
+nmap s <Plug>(easymotion-s2)
+nmap  <Leader>f <Plug>(easymotion-f)
+nmap  <Leader>F <Plug>(easymotion-F)
+nmap  <Leader>L <Plug>(easymotion-bd-jk)
 
 " Gundo
 nnoremap <leader>m :GundoToggle<CR>
