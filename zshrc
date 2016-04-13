@@ -93,9 +93,7 @@ function cdg() {
 }
 
 # docker
-export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=1
+eval "$(docker-machine env default)"
 
 # istheinternetonfire
 if [ $[$RANDOM % 100] -lt 10 ]; then
