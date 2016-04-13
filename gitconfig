@@ -23,6 +23,15 @@
     ffs = "!git upr && git push"
     lgtm = -c core.editor=true merge -S --no-ff
     rebase-date = rebase --ignore-date
+    pu = push -u
+    puf = push -uf
+    current-branch = rev-parse --abbrev-ref HEAD
+    deploy = "!f() {\
+        local x=$(git current-branch);\
+        git checkout deployment && \
+        git merge $x && \
+        git push && \
+        git checkout $x;}; f"
 
     ci = commit
     cm = commit -m
@@ -68,9 +77,9 @@
 
     #list all aliases
     la = "!git config -l | grep alias | cut -c 7- | sort"
-    diff = diff --word-diff
     d = diff --word-diff
-    dc = diff --cached
+    dc = diff --word-diff --cached
+    pd = "!f(){ git difftool -y -x patdiff $* | less; }; f"
 
     #list modified files in last commit
     dl = "!git ll -1"
@@ -127,7 +136,7 @@
     ours = "!f() { git co --ours $@ && git add $@; }; f"
     theirs = "!f() { git co --theirs $@ && git add $@; }; f"
 [push]
-	default = tracking
+	default = current
 [core]
 	editor = /usr/bin/vim
 	excludesfile = ~/.gitignore
