@@ -131,7 +131,7 @@ let g:rainbow_conf = {
             \   'separately': {
             \       '*': {},
             \       'clojure': {
-            \           'ctermfgs': ['darkred', 'darkyellow', 'darkblue', 'darkcyan', 'darkmagenta', 'darkblue'],
+            \           'ctermfgs': ['darkred', 'darkcyan', 'darkyellow', 'darkblue', 'darkcyan', 'darkmagenta', 'darkblue'],
             \       },
             \       'tex': {
             \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
