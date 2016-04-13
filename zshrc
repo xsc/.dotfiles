@@ -99,3 +99,9 @@ eval "$(docker-machine env default)"
 if [ $[$RANDOM % 100] -lt 10 ]; then
     host -t txt istheinternetonfire.com | cut -f 2 -d '"' | cowsay -f moose
 fi
+
+# OPAM configuration
+OPAM_INIT="$HOME/.opam/opam-init/init.zsh"
+if [ -e "$OPAM_INIT" ]; then
+    source "$OPAM_INIT" >& /dev/null || true
+fi
