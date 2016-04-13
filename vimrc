@@ -195,6 +195,10 @@ nmap  <Leader>f <Plug>(easymotion-f)
 nmap  <Leader>F <Plug>(easymotion-F)
 nmap  <Leader>L <Plug>(easymotion-bd-jk)
 
+" EasyAlign
+nmap ga <plug>(EasyAlign)
+xmap ga <plug>(EasyAlign)
+
 " Gundo
 nnoremap <leader>m :GundoToggle<CR>
 
