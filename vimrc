@@ -28,6 +28,8 @@ if exists("&undodir")
     set undodir=~/.vim/undo
 endif
 set clipboard=unnamed
+set wildmenu
+set wildmode=longest:full,full
 
 " Characters
 set lcs=tab:▸\ ,nbsp:·
