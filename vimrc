@@ -163,7 +163,11 @@ endif
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
-call unite#custom#source('file_rec/async','ignore_pattern','\/\(target\|out\)\/')
+call unite#custom#source(
+            \ 'file_rec/async',
+            \ 'ignore_pattern',
+            \ '\(\/\(target\|out\|node_modules\)\/\|\.\(nrepl\|lein\)-.*\|pom\.xml\|pom\.xml\.asc\)'
+            \ )
 nnoremap <C-P>      :<C-U>Unite -start-insert file_rec/async -default-action=vsplit<CR>
 nnoremap ,p         :<C-U>Unite -start-insert buffer<CR>
 nnoremap <leader>uu :<C-U>Unite -buffer-name=recent file_mru -default-action=vsplit<CR>
