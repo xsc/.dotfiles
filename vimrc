@@ -64,6 +64,7 @@ nnoremap <C-H> <C-W><C-H>
 " Microbe Bundles
 "bundle airblade/vim-gitgutter
 "bundle altercation/vim-colors-solarized
+"bundle asciidoc/vim-asciidoc
 "bundle bling/vim-airline
 "bundle bronson/vim-trailing-whitespace
 "bundle christoomey/vim-tmux-navigator
@@ -71,6 +72,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle ekalinin/Dockerfile
 "bundle guns/vim-clojure-static
 "bundle guns/vim-sexp
+"bundle junegunn/vim-easy-align
 "bundle juvenn/mustache.vim
 "bundle lambdatoast/elm.vim
 "bundle luochen1990/rainbow
@@ -79,6 +81,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle Shougo/unite
 "bundle Shougo/vimproc.vim
 "bundle sjl/gundo
+"bundle tomtom/tcomment_vim
 "bundle tpope/vim-dispatch
 "bundle tpope/vim-fireplace
 "bundle tpope/vim-fugitive
@@ -87,6 +90,8 @@ nnoremap <C-H> <C-W><C-H>
 "bundle tpope/vim-repeat
 "bundle tpope/vim-salve
 "bundle tpope/vim-sexp-mappings-for-regular-people
+"bundle tpope/vim-sleuth
+"bundle wellle/targets
 
 " Appearance
 set background=dark
