@@ -77,9 +77,8 @@
 
     #list all aliases
     la = "!git config -l | grep alias | cut -c 7- | sort"
-    d = diff --word-diff
-    dc = diff --word-diff --cached
-    pd = "!f(){ git difftool -y -x patdiff $* | less; }; f"
+    d = diff
+    dc = diff --cached
 
     #diff last commit
     dlc = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat -n 1 -p --full-diff
@@ -138,6 +137,7 @@
 	editor = /usr/bin/vim
 	excludesfile = ~/.gitignore
 	whitespace = trailing-space,space-before-tab
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [apply]
 	whitespace = fix
 [web]
