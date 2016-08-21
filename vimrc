@@ -167,19 +167,19 @@ elseif executable('ack')
     let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
     let g:unite_source_grep_recursive_opt = ''
 endif
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
+call unite#custom#source('file_rec/async','matchers',['converter_relative_word', 'matcher_fuzzy'])
 call unite#custom#source(
             \ 'file_rec/async',
             \ 'ignore_pattern',
             \ '\(\/\(target\|out\|node_modules\)\/\|\.\(nrepl\|lein\)-.*\|pom\.xml\|pom\.xml\.asc\)'
             \ )
-nnoremap <C-P>      :<C-U>Unite -start-insert file_rec/async -default-action=vsplit<CR>
-nnoremap ,p         :<C-U>Unite -start-insert buffer<CR>
-nnoremap <leader>uu :<C-U>Unite -buffer-name=recent file_mru -default-action=vsplit<CR>
-nnoremap <leader>un :<C-U>Unite -start-insert file/new -default-action=vsplit<CR>
-nnoremap <leader>ug :<C-U>Unite -buffer-name=grep grep:.: -default-action=vsplit<CR>
+nnoremap <C-P>      :<C-U>Unite -buffer-name=files -start-insert file_rec/async<CR>
+nnoremap <C-I><C-P> :<C-U>Unite -buffer-name=files -start-insert file_rec/async -default-action=vsplit<CR>
+nnoremap <C-I><C-I> :<C-U>Unite -buffer-name=buffers -start-insert buffer<CR>
+nnoremap <C-I><C-O> :<C-U>Unite -buffer-name=recent-files -start-insert file_mru<CR>
+nnoremap <C-I><C-U> :<C-U>Unite -buffer-name=grep grep:.:<CR>
+nnoremap <C-I><C-K> :<C-U>Unite -start-insert file/new<CR>
 
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
