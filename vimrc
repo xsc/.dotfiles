@@ -94,13 +94,13 @@ nnoremap <C-H> <C-W><C-H>
 "bundle wellle/targets
 
 " Appearance
-set background=dark
+set background=light
 silent! colorscheme solarized
 let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'grep', 'search']
 
 if (exists('+colorcolumn'))
     set colorcolumn=80
-    highlight ColorColumn ctermbg=0
+    highlight ColorColumn ctermbg=254
 endif
 
 " Clojure
@@ -193,10 +193,9 @@ nnoremap <leader>gw :Gwrite<CR>
 
 " GitGutter
 nnoremap <leader>gg :GitGutterToggle<CR>
-highlight SignColumn      ctermbg=0
-highlight GitGutterAdd    ctermbg=0 ctermfg=2
-highlight GitGutterChange ctermbg=0 ctermfg=3
-highlight GitGutterDelete ctermbg=0 ctermfg=1
+highlight GitGutterAdd    ctermfg=2 ctermbg=7
+highlight GitGutterChange ctermfg=3 ctermbg=7
+highlight GitGutterDelete ctermfg=1 ctermbg=7
 
 " EasyMotion
 let g:EasyMotion_smartcase = 1
