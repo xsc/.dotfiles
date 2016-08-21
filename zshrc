@@ -79,6 +79,7 @@ alias sshto='/git/sf/sf_scripts/sshto'
 alias scp-pngs='/git/sf/sf_scripts/scp-pngs'
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export LEIN_FAST_TRAMPOLINE=1
 
 # move to git
 GIT_REPO_PATH="/git"
