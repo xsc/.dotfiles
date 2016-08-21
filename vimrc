@@ -217,3 +217,19 @@ au FileType markdown :set textwidth=80
 
 " Paste
 set pastetoggle=<leader>pp
+
+" Plain
+let g:PlainBufferSet = 0
+function! PlainBuffer()
+    if g:PlainBufferSet == 0
+        GitGutterDisable
+        set nonumber
+        let g:PlainBufferSet = 1
+    else
+        GitGutterEnable
+        set number
+        let g:PlainBufferSet = 0
+    endif
+endfu
+
+nmap <Leader>P :call PlainBuffer()<CR>
