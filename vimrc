@@ -104,6 +104,7 @@ if (exists('+colorcolumn'))
 endif
 
 " Clojure
+
 function! SetupClojure()
     " vim-fireplace + vim-sexp
     nmap <buffer> cee :%Eval<CR>
@@ -112,7 +113,7 @@ function! SetupClojure()
     nmap <buffer> cpc :cclose<CR>
     nmap <buffer> caa :A<CR>
     nmap <buffer> cac :AV<CR>
-    nmap <buffer> crc :let g:leiningen_no_auto_repl=1<CR>:Connect nrepl://
+    nmap <buffer> crc :silent unlet g:salve_auto_start_repl<CR>:Connect nrepl://
     nmap <buffer> <Leader>S  <Leader>@
 
     " vim-clojure-static
