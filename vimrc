@@ -119,7 +119,6 @@ function! SetupClojure()
     " vim-clojure-static
     if !exists('g:clojure_loaded')
         let g:clojure_fuzzy_indent = 1
-        let g:clojure_special_indent_words .= ',fact,facts,defprotocol+,defcomponent,defsystem'
         let g:clojure_align_multiline_strings = 1
         let g:clojure_loaded = 1
     endif
