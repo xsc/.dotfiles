@@ -33,9 +33,14 @@
         git push && \
         git checkout $x;}; f"
 
+    rbm = rebase master
+    rbim = rebase -i master
+    autosquash = -c core.editor=true rebase -i --autosquash
+
     ci = commit
     cm = commit -m
     ca = commit -a
+    cf = commit --fixup
     cam = commit -a -m
     amend = commit --amend
     caa = commit -a --amend -C HEAD
