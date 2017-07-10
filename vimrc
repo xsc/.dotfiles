@@ -27,7 +27,9 @@ set directory=~/.vim/swaps
 if exists("&undodir")
     set undodir=~/.vim/undo
 endif
-set clipboard=unnamed
+if $TMUX == ''
+    set clipboard=unnamed
+endif
 set wildmenu
 set wildmode=longest:full,full
 
