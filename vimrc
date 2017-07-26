@@ -71,6 +71,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle bling/vim-airline
 "bundle bronson/vim-trailing-whitespace
 "bundle christoomey/vim-tmux-navigator
+"bundle derekwyatt/vim-scala
 "bundle easymotion/vim-easymotion
 "bundle ekalinin/Dockerfile
 "bundle guns/vim-clojure-static
@@ -78,6 +79,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle junegunn/vim-easy-align
 "bundle juvenn/mustache.vim
 "bundle lambdatoast/elm.vim
+"bundle ludovicchabant/vim-gutentags
 "bundle luochen1990/rainbow
 "bundle pangloss/vim-javascript
 "bundle Shougo/neomru
@@ -94,6 +96,7 @@ nnoremap <C-H> <C-W><C-H>
 "bundle tpope/vim-salve
 "bundle tpope/vim-sexp-mappings-for-regular-people
 "bundle tpope/vim-sleuth
+"bundle vim-airline/vim-airline-themes
 "bundle wellle/targets
 
 " Appearance
