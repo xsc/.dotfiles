@@ -32,6 +32,7 @@ if $TMUX == ''
 endif
 set wildmenu
 set wildmode=longest:full,full
+set tags=tags;/
 
 " Characters
 set lcs=tab:▸\ ,nbsp:·
@@ -174,7 +175,7 @@ call unite#custom#source('file_rec/async','matchers',['converter_relative_word',
 call unite#custom#source(
             \ 'file_rec/async',
             \ 'ignore_pattern',
-            \ '\(\/\(target\|out\|node_modules\)\/\|\.\(nrepl\|lein\)-.*\|pom\.xml\|pom\.xml\.asc\)'
+            \ '\(\/\(target\|out\|node_modules\|.idea\)\/\|\.\(nrepl\|lein\)-.*\|pom\.xml\|pom\.xml\.asc\)'
             \ )
 nnoremap <C-P>      :<C-U>Unite -buffer-name=files -start-insert file_rec/async<CR>
 nnoremap <C-I><C-P> :<C-U>Unite -buffer-name=files -start-insert file_rec/async -default-action=vsplit<CR>
