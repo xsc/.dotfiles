@@ -1,0 +1,171 @@
+#!/bin/bash
+
+# -----------------------------------------------------
+#
+# Requirements:
+#
+#  Leiningen 2.4
+#
+# Installation:
+#
+#   ln -s $(pwd)/release.sh ~/bin
+#
+# Usage:
+#
+#   release
+#   release major
+#   release minor
+#
+# -----------------------------------------------------
+
+LEIN="$(which lein)"
+LEIN_BUMP="change version leiningen.release/bump-version"
+LEVEL=""
+PREFIX=""
+DEPLOY="false"
+PUSH="false"
+FORCE="false"
+UBERJAR=""
+REPOSITORY=""
+BUMP=""
+RELEASE_BRANCH="master"
+SETTINGS_FILE="$HOME/.lein/.release"
+
+set -e -u
+
+if [ -s "$SETTINGS_FILE" ]; then source "$SETTINGS_FILE"; fi
+
+# -----------------------------------------------------
+
+if [ -z "$LEIN" ]; then
+    echo "no Leiningen found using 'lein' ..." 1>&2;
+    exit 1;
+fi
+
+if [ ! x$RELEASE_BRANCH = "x$(git rev-parse --abbrev-ref HEAD)" ]; then
+    echo "can only release from branch '$RELEASE_BRANCH' ..." 1>&2;
+    exit 1;
+fi
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        major|minor)
+            LEVEL="$1";
+            shift;;
+        clojars)
+            REPOSITORY="clojars";
+            DEPLOY="true";
+            shift;;
+        --deploy)
+            DEPLOY="true";
+            shift;;
+        --push)
+            PUSH="true";
+            shift;;
+        --prefix)
+            PREFIX="$2";
+            shift; shift;;
+        --repository)
+            REPOSITORY="$2";
+            shift; shift;;
+        --uberjar)
+            UBERJAR="uberjar";
+            shift;;
+        --uberjar-with)
+            UBERJAR="$2";
+            shift; shift;;
+        --force)
+            FORCE="true"
+            shift;;
+        *)
+            echo "unknown parameter: $1" 1>&2;
+            exit 1;;
+    esac
+done
+
+if [ x$DEPLOY = xtrue -a ! -z "$UBERJAR" ]; then
+    echo "Can either deploy _OR_ create an Uberjar, not both." 1>&2;
+    exit 1;
+fi
+
+if [ ! -z "$LEVEL" ]; then BUMP="$LEIN_BUMP $LEVEL,"; fi
+BUMP="$BUMP $LEIN_BUMP release"
+
+if [[ ! "$FORCE" == "true" ]]; then
+    COMMITS_SINCE_LAST_RELEASE=$(git rev-list $(git rev-list --tags --no-walk --max-count=1 2> /dev/null)..HEAD --count 2> /dev/null)
+    if [[ "$COMMITS_SINCE_LAST_RELEASE" == "1" ]]; then
+        echo "It seems there was only one commit since the last tag, indicating that no" 1>&2;
+        echo "changes would be released. (Use '--force' to override.)" 1>&2;
+        exit 1;
+    fi
+fi
+
+# -----------------------------------------------------
+
+function current_tag() {
+    local commit=$(git rev-parse HEAD)
+    git name-rev --tags --name-only "$commit" | sed 's/\^0$//'
+}
+
+function rollback_commit() {
+    git reset --hard HEAD~
+}
+
+function rollback_tag() {
+    local tag=$(current_tag)
+    if [ ! x$tag = "xundefined" ]; then
+        git tag -d $tag
+    fi
+}
+
+
+function with_commit_rollback () {
+    local status="0"
+    set +e
+    $@
+    status="$?"
+    set -e
+    if [ ! x$status = x0 ]; then
+        echo "'$@' failed - rolling back ..."
+        rollback_commit
+    fi
+    return $status
+}
+
+function with_rollback() {
+    local status="0"
+    set +e
+    $@
+    status="$?"
+    set -e
+    if [ ! x$status = x0 ]; then
+        echo "'$@' failed - rolling back ..."
+        rollback_tag
+        rollback_commit
+    fi
+    return $status
+}
+
+# -----------------------------------------------------
+
+$LEIN do vcs assert-committed, $BUMP
+$LEIN vcs commit
+with_commit_rollback $LEIN vcs tag "$PREFIX"
+
+if [ x$DEPLOY = xtrue ]; then
+    with_rollback $LEIN deploy $REPOSITORY
+fi
+
+if [ ! -z "$UBERJAR" ]; then
+    with_rollback $LEIN "do" clean, $UBERJAR
+fi
+
+$LEIN $LEIN_BUMP
+$LEIN vcs commit
+
+if [ x$PUSH = xtrue ]; then
+    git push origin master --tags
+    echo "Artifact was released."
+else
+    echo -e "Check that all went fine and then\n  git push origin master --tags"
+fi
