@@ -7,3 +7,8 @@
 .lein-plugins
 .lein-repl-history
 .nrepl_port
+.DS_Store
+/.idea
+/tags
+/package-lock.json
+/project/build.properties
