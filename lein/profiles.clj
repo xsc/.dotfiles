@@ -26,4 +26,4 @@
  :ultra {:plugins [[venantius/ultra "0.4.1"]]
          :ultra {:color-scheme :solarized_dark}}
  :dox {:plugins [[me.raynes/dox "0.1.0"]]}
- :user [:xsc :injections :stylefruits]}
+ :user [:xsc :injections]}
