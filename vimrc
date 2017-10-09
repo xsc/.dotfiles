@@ -45,7 +45,7 @@ let maplocalleader=","
 let g:mapleader=","
 
 " Mappings
-nnoremap <C-@> :nohl<CR>
+nnoremap <C-Space> :nohl<CR>
 nnoremap <F6> :set number!<CR>
 noremap <leader>ss :w !sudo tee % > /dev/null<CR>
 noremap q: :q
