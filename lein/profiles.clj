@@ -1,5 +1,5 @@
 {:xsc {:plugins [#_[lein-cljfmt "0.4.1"]
-                 [lein-ancient "0.6.10"]
+                 [lein-ancient "0.6.12"]
                  [lein-try "0.4.3"]
                  [lein-license "0.1.7-SNAPSHOT"]]
        :signing {:gpg-key "ED4FB884"}
