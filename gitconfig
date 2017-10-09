@@ -23,6 +23,7 @@
     ffs = "!git upr && git push"
     lgtm = -c core.editor=true merge -S --no-ff
     rebase-date = rebase --ignore-date
+    amend-date = -c core.editor=true commit --amend --date=now
     pu = push -u
     puf = push -uf
     current-branch = rev-parse --abbrev-ref HEAD
