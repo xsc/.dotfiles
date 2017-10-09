@@ -1,0 +1,65 @@
+#!/bin/bash
+
+DOC_DIR="$1"
+COMMIT=$(git rev-parse HEAD | cut -c 1-10)
+if [ -z "$DOC_DIR" ]; then DOC_DIR="target/doc"; fi
+
+set -eu
+
+# ---------------------
+# Checks
+# ---------------------
+if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
+    echo "Can only release documentation from 'master'." 1>&2
+    exit 1
+fi
+
+if [ ! -z "$(git status --porcelain)" ]; then
+    echo "There are uncommitted changes or untracked files in the current repository." 1>&2
+    exit 1
+fi
+
+if [ ! -d "$DOC_DIR" ]; then
+    echo "The documentation directory '$DOC_DIR' does not exist." 1>&2
+    exit 1
+fi
+
+# ---------------------
+# Logic
+# ---------------------
+
+# 1. Move documentation directory to temp location.
+TMPDIR=(`mktemp -d 2>/dev/null || mktemp -d -t 'gh-pages'`)
+cp -r "$DOC_DIR"/* "$TMPDIR"
+cp .gitignore "$TMPDIR"
+
+# 2. Check out 'gh-pages'.
+set +e
+git show-ref --verify --quiet "refs/heads/gh-pages"
+status="$?"
+set -e
+
+if [ "$status" == "0" ]; then
+    git checkout gh-pages
+else
+    git checkout --orphan gh-pages
+fi
+
+# 3. Clear working directory.
+git rm -rf --quiet .
+
+# 4. Move documentation to working directoy.
+mv "$TMPDIR"/* .
+mv "$TMPDIR/.gitignore" .
+
+# 5. Commit.
+git add -Av .
+git commit -m "update documentation ($COMMIT)."
+
+# 6. Go back to 'master'.
+git checkout master
+echo
+echo "Run the following to push the documentation:"
+echo
+echo "  git push origin gh-pages:gh-pages"
+echo
