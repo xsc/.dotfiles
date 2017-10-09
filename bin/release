@@ -25,6 +25,8 @@ PREFIX=""
 DEPLOY="false"
 PUSH="false"
 FORCE="false"
+TAG="true"
+AMEND="false"
 UBERJAR=""
 REPOSITORY=""
 BUMP=""
@@ -76,6 +78,12 @@ while [ $# -gt 0 ]; do
             shift; shift;;
         --force)
             FORCE="true"
+            shift;;
+        --without-tag)
+            TAG="false"
+            shift;;
+        --amend)
+            AMEND="true"
             shift;;
         *)
             echo "unknown parameter: $1" 1>&2;
@@ -132,6 +140,19 @@ function with_commit_rollback () {
     return $status
 }
 
+function with_reset () {
+    local status="0"
+    set +e
+    $@
+    status="$?"
+    set -e
+    if [ ! x$status = x0 ]; then
+        echo "'$@' failed - rolling back ..."
+        git reset --hard
+    fi
+    return $status
+}
+
 function with_rollback() {
     local status="0"
     set +e
@@ -149,8 +170,15 @@ function with_rollback() {
 # -----------------------------------------------------
 
 $LEIN do vcs assert-committed, $BUMP
-$LEIN vcs commit
-with_commit_rollback $LEIN vcs tag "$PREFIX"
+with_reset $LEIN vcs commit
+
+if [ x$AMEND = xtrue ]; then
+    with_commit_rollback git amend
+fi
+
+if [ x$TAG = xtrue ]; then
+    with_commit_rollback $LEIN vcs tag "$PREFIX"
+fi
 
 if [ x$DEPLOY = xtrue ]; then
     with_rollback $LEIN deploy $REPOSITORY
