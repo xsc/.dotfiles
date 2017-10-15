@@ -1,19 +1,39 @@
 #!/bin/bash
 
-DOC_DIR="$1"
-COMMIT=$(git rev-parse HEAD | cut -c 1-10)
-if [ -z "$DOC_DIR" ]; then DOC_DIR="target/doc"; fi
+# ---------------------
+# CLI
+# ---------------------
+HEAD=$(git rev-parse --abbrev-ref HEAD)
+DOC_DIR="target/doc"
+GENERATE="lein codox"
+COMMIT="master"
 
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --directory)
+            DOC_DIR="$2";
+            shift; shift;;
+        --generate)
+            GENERATE="$2"
+            shift; shift;;
+        *)
+            COMMIT="$1"
+            break;;
+    esac
+done
+
+git checkout -q "$COMMIT"
+COMMIT=$(git rev-parse HEAD | cut -c 1-10)
 set -eu
+
+# ---------------------
+# Generate
+# ---------------------
+lein codox
 
 # ---------------------
 # Checks
 # ---------------------
-if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
-    echo "Can only release documentation from 'master'." 1>&2
-    exit 1
-fi
-
 if [ ! -z "$(git status --porcelain)" ]; then
     echo "There are uncommitted changes or untracked files in the current repository." 1>&2
     exit 1
@@ -40,9 +60,9 @@ status="$?"
 set -e
 
 if [ "$status" == "0" ]; then
-    git checkout gh-pages
+    git checkout -q gh-pages
 else
-    git checkout --orphan gh-pages
+    git checkout -q --orphan gh-pages
 fi
 
 # 3. Clear working directory.
@@ -53,11 +73,18 @@ mv "$TMPDIR"/* .
 mv "$TMPDIR/.gitignore" .
 
 # 5. Commit.
-git add -Av .
+git add -Av . > /dev/null
+
+if [ -z "$(git status --porcelain)" ]; then
+    echo "Nothing has changed in the documentation." 1>&2
+    git checkout -q "$HEAD"
+    exit 1
+fi
+
 git commit -m "update documentation ($COMMIT)."
 
-# 6. Go back to 'master'.
-git checkout master
+# 6. Go back to previous HEAD.
+git checkout -q "$HEAD"
 echo
 echo "Run the following to push the documentation:"
 echo
