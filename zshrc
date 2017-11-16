@@ -110,6 +110,8 @@ bindkey -M vicmd v edit-command-line
 alias vim=nvim
 
 export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"
+function initNvm() {
+  source "/usr/local/opt/nvm/nvm.sh"
+}
 
 export PATH="$HOME/.yarn/bin:$PATH"
