@@ -63,34 +63,11 @@ bindkey -M viins '^@' zsh_clear
 
 # Shortcuts
 alias rma='rm *'
-alias b2d='boot2docker'
-
-# tmux-up
-function tu() {
-    local profile="$1"
-    if [ -z "$profile" ]; then return 1; fi
-    local p="$HOME/.tmux/$profile.conf"
-    if [ ! -s "$p" ]; then return 1; fi
-    tmux-up "$p"
-}
 
 # sshto
-alias sshto='/git/sf/sf_scripts/sshto'
-alias scp-pngs='/git/sf/sf_scripts/scp-pngs'
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LEIN_FAST_TRAMPOLINE=1
-
-# move to git
-GIT_REPO_PATH="/git"
-function cdg() {
-    local r="$1"
-    if [ -z "$r" ]; then
-        cd "$GIT_REPO_PATH";
-    else
-        cd "$(find "$GIT_REPO_PATH" -type d -path "*$r" -maxdepth 2 -mindepth 1 | head -n 1)";
-    fi
-}
 
 # docker
 eval "$(docker-machine env default)"
@@ -98,12 +75,6 @@ eval "$(docker-machine env default)"
 # istheinternetonfire
 if [ $[$RANDOM % 100] -lt 10 ]; then
     host -t txt istheinternetonfire.com | cut -f 2 -d '"' | cowsay -f moose
-fi
-
-# OPAM configuration
-OPAM_INIT="$HOME/.opam/opam-init/init.zsh"
-if [ -e "$OPAM_INIT" ]; then
-    source "$OPAM_INIT" >& /dev/null || true
 fi
 
 ## Prompt
