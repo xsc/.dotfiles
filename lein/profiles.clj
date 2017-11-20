@@ -1,29 +1,22 @@
-{:xsc {:plugins [#_[lein-cljfmt "0.4.1"]
-                 [lein-ancient "0.6.14"]
+{:xsc {:plugins [[lein-ancient "0.6.14"]
                  [lein-try "0.4.3"]
                  [lein-license "0.1.7-SNAPSHOT"]]
        :signing {:gpg-key "ED4FB884"}
-       :aliases {"qi"    ["ancient" "upgrade" ":no-tests" ":interactive"]
-                 "q"     ["ancient" "upgrade" ":no-tests"]
-                 "ultra" ["with-profile" "+ultra" "repl"]}}
- :injections {:dependencies [[spyscope "0.1.5"]
-                             [im.chit/vinyasa "0.4.7"]
-                             [io.aviso/pretty "0.1.30"]
-                             [clj-time "0.12.0"]]
-              :injections [(require 'spyscope.core)
-                           (require '[vinyasa.inject :as inject])
-                           (require 'io.aviso.repl)
-                           (io.aviso.repl/install-pretty-exceptions)
-                           (inject/in
-                                  [vinyasa.inject :refer [inject [in inject-in]]]
-                                  [vinyasa.maven pull]
+       :aliases {"qi" ["ancient" "upgrade" ":no-tests" ":interactive"]
+                 "q"  ["ancient" "upgrade" ":no-tests"]}}
+ :injections
+ {:dependencies [[im.chit/lucid.core.inject "1.3.13"]
+                 [im.chit/lucid.core.debug "1.3.13"]
+                 [im.chit/lucid.package "1.3.13"]
+                 [fipp "0.6.12"]]
+  :injections [(require 'lucid.core.inject)
+               (require 'lucid.package)
+               (require 'fipp.edn)
+               (lucid.core.inject/in
+                 [lucid.package :refer [pull]]
 
-                                  clojure.core
-                                  [vinyasa.reflection .> .? .* .% .%> .& .>ns .>var]
-
-                                  clojure.core >
-                                  [clojure.pprint pprint])]}
- :ultra {:plugins [[venantius/ultra "0.4.1"]]
-         :ultra {:color-scheme :solarized_dark}}
+                 clojure.core
+                 [lucid.core.debug]
+                 [fipp.edn :refer [[pprint p>]]])]}
  :dox {:plugins [[me.raynes/dox "0.1.0"]]}
  :user [:xsc :injections]}
