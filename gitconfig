@@ -1,7 +1,7 @@
 [user]
-	name = Yannick Scherer
-	email = yannick.scherer@futurice.com
-	signingkey = FCC8CDA4
+    name = Yannick Scherer
+    email = yannick.scherer@futurice.com
+    signingkey = FCC8CDA4
 
 [color]
     branch = auto
@@ -146,14 +146,15 @@
     #merges
     ours = "!f() { git co --ours $@ && git add $@; }; f"
     theirs = "!f() { git co --theirs $@ && git add $@; }; f"
+    serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 [push]
-	default = current
+    default = current
 [core]
-	editor = /usr/bin/vim
-	excludesfile = ~/.gitignore
-	whitespace = trailing-space,space-before-tab
-	pager = diff-so-fancy | less --tabs=4 -RFX
+    editor = /usr/bin/vim
+    excludesfile = ~/.gitignore
+    whitespace = trailing-space,space-before-tab
+    pager = diff-so-fancy | less --tabs=4 -RFX
 [apply]
-	whitespace = fix
+    whitespace = fix
 [web]
-	browser = open
+    browser = open
