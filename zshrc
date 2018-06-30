@@ -115,3 +115,7 @@ function initNvm() {
 }
 
 export PATH="$HOME/.yarn/bin:$PATH"
+
+if [ -x "$(command -v minishift)" ]; then
+  eval $(minishift oc-env)
+fi
