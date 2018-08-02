@@ -101,6 +101,17 @@ ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[blue]%}%{↑%G%}"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{…%G%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}%{✔%G%}"
 
+# tmux
+_not_inside_tmux() { [[ -z "$TMUX" ]] }
+
+ensure_tmux_is_running() {
+  if _not_inside_tmux; then
+    tmux attach 2> /dev/null || tmux new-session -s ft;
+  fi
+}
+
+ensure_tmux_is_running
+
 ## Command Line Edit
 autoload -U edit-command-line
 zle -N edit-command-line
