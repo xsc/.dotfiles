@@ -119,6 +119,8 @@ bindkey -M vicmd v edit-command-line
 
 ## Vim
 alias vim=nvim
+export EDITOR=nvim
+export VISUAL=nvim
 
 export NVM_DIR="$HOME/.nvm"
 function initNvm() {
