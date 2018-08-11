@@ -99,7 +99,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'ludovicchabant/vim-gutentags'
 
     " Completion
-    Plug 'Shougo/deoplete.nvim', {'do' : ':UpdateRemotePlugins' }
+    Plug 'Shougo/deoplete.nvim', {'do' : ':UpdateRemotePlugins', 'for': 'typescript'}
     Plug 'Shougo/denite.nvim'
 
     " Clojure
@@ -114,7 +114,13 @@ call plug#begin('~/.vim/plugged')
 
     " TypeScript
     Plug 'HerringtonDarkholme/yats.vim'
-    Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+    Plug 'mhartington/nvim-typescript', {'do': './install.sh', 'for': 'typescript'}
+
+    " GraphQL
+    Plug 'jparise/vim-graphql'
+
+    " Markdown
+    Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 " Appearance
@@ -254,6 +260,7 @@ nnoremap <leader>m :GundoToggle<CR>
 
 " Markdown
 au FileType markdown :set textwidth=80
+let g:vim_markdown_folding_disabled = 1
 
 " Plain
 let g:PlainBufferSet = 0
