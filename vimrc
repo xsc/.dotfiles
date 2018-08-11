@@ -1,6 +1,5 @@
 " General
 set nocompatible
-call pathogen#infect()
 syntax on
 filetype plugin indent on
 
@@ -34,6 +33,9 @@ set wildmenu
 set wildmode=longest:full,full
 set tags=tags;/
 
+" Python
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 " Characters
 set lcs=tab:▸\ ,nbsp:·
 set list
@@ -64,40 +66,56 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Microbe Bundles
-"bundle airblade/vim-gitgutter
-"bundle altercation/vim-colors-solarized
-"bundle asciidoc/vim-asciidoc
-"bundle bling/vim-airline
-"bundle bronson/vim-trailing-whitespace
-"bundle christoomey/vim-tmux-navigator
-"bundle derekwyatt/vim-scala
-"bundle easymotion/vim-easymotion
-"bundle ekalinin/Dockerfile
-"bundle guns/vim-clojure-static
-"bundle guns/vim-sexp
-"bundle junegunn/vim-easy-align
-"bundle juvenn/mustache.vim
-"bundle lambdatoast/elm.vim
-"bundle ludovicchabant/vim-gutentags
-"bundle luochen1990/rainbow
-"bundle pangloss/vim-javascript
-"bundle Shougo/neomru
-"bundle Shougo/unite
-"bundle Shougo/vimproc.vim
-"bundle sjl/gundo
-"bundle tomtom/tcomment_vim
-"bundle tpope/vim-dispatch
-"bundle tpope/vim-fireplace
-"bundle tpope/vim-fugitive
-"bundle tpope/vim-markdown
-"bundle tpope/vim-projectionist
-"bundle tpope/vim-repeat
-"bundle tpope/vim-salve
-"bundle tpope/vim-sexp-mappings-for-regular-people
-"bundle tpope/vim-sleuth
-"bundle vim-airline/vim-airline-themes
-"bundle wellle/targets
+" Plugins
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+    " Theme
+    Plug 'altercation/vim-colors-solarized'
+    Plug 'bling/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+
+    " Format & Move
+    Plug 'junegunn/vim-easy-align'
+    Plug 'easymotion/vim-easymotion'
+    Plug 'bronson/vim-trailing-whitespace'
+    Plug 'wellle/targets.vim'
+    Plug 'tpope/vim-sleuth'
+
+    " Git
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+
+    " Integration
+    Plug 'christoomey/vim-tmux-navigator'
+
+    " Utils
+    Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+    Plug 'tpope/vim-repeat'
+    Plug 'ludovicchabant/vim-gutentags'
+
+    " Completion
+    Plug 'Shougo/deoplete.nvim', {'do' : ':UpdateRemotePlugins' }
+    Plug 'Shougo/denite.nvim'
+
+    " Clojure
+    Plug 'tpope/vim-dispatch'
+    Plug 'tpope/vim-fireplace'
+    Plug 'tpope/vim-salve'
+    Plug 'tpope/vim-sexp-mappings-for-regular-people'
+    Plug 'tpope/vim-projectionist'
+    Plug 'guns/vim-clojure-static'
+    Plug 'guns/vim-sexp'
+    Plug 'luochen1990/rainbow'
+
+    " TypeScript
+    Plug 'HerringtonDarkholme/yats.vim'
+    Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+call plug#end()
 
 " Appearance
 set background=light
@@ -159,33 +177,39 @@ let g:rainbow_conf = {
             \   }
             \}
 
-" Unite
-let g:unite_winheight = 10
-let g:unite_source_history_yank_enable = 1
-let g:unite_split_rule = 'botright'
-if executable('pt')
-    let g:unite_source_grep_command = 'pt'
-    let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-    let g:unite_source_grep_recursive_opt = ''
-    let g:unite_source_grep_encoding = 'utf-8'
-elseif executable('ack')
-    let g:unite_source_grep_command = 'ack'
-    let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
-    let g:unite_source_grep_recursive_opt = ''
+" Denite
+call denite#custom#option('_', {
+  \ 'prompt': 'λ:',
+  \ 'empty': 0,
+  \ 'winheight': 10,
+  \ 'source_names': 'short',
+  \ 'vertical_preview': 1,
+  \ 'auto-accel': 1,
+  \ 'auto-resume': 1,
+  \ 'reversed': 'true',
+  \ })
+
+call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+
+if (executable('pt'))
+  call denite#custom#var('file/rec', 'command',
+    \ ['pt', '--follow', '--nocolor', '--nogroup',
+    \  (has('win32') ? '-g:' : '-g='), ''])
+
+  call denite#custom#var('grep', 'command', ['pt'])
+  call denite#custom#var('grep', 'default_opts',
+    \ ['--nogroup', '--nocolor', '--smart-case'])
+  call denite#custom#var('grep', 'recursive_opts', [])
+  call denite#custom#var('grep', 'pattern_opt', [])
+  call denite#custom#var('grep', 'separator', ['--'])
+  call denite#custom#var('grep', 'final_opts', [])
 endif
-call unite#custom#source('file_rec/async','sorters','sorter_rank')
-call unite#custom#source('file_rec/async','matchers',['converter_relative_word', 'matcher_fuzzy'])
-call unite#custom#source(
-            \ 'file_rec/async',
-            \ 'ignore_pattern',
-            \ '\(\/\(target\|out\|node_modules\|.idea\)\/\|\.\(nrepl\|lein\)-.*\|pom\.xml\|pom\.xml\.asc\)'
-            \ )
-nnoremap <C-P>      :<C-U>Unite -buffer-name=files -start-insert file_rec/async<CR>
-nnoremap <C-I><C-P> :<C-U>Unite -buffer-name=files -start-insert file_rec/async -default-action=vsplit<CR>
-nnoremap <C-I><C-I> :<C-U>Unite -buffer-name=buffers -start-insert buffer<CR>
-nnoremap <C-I><C-O> :<C-U>Unite -buffer-name=recent-files -start-insert file_mru<CR>
-nnoremap <C-I><C-U> :<C-U>Unite -buffer-name=grep grep:.:<CR>
-nnoremap <C-I><C-K> :<C-U>Unite -start-insert file/new<CR>
+
+nnoremap <C-P>      :<C-U>DeniteProjectDir -buffer-name=files file/rec<CR>
+nnoremap <C-I><C-P> :<C-U>DeniteProjectDir -buffer-name=grep  grep<CR>
+nnoremap <C-I><C-I> :<C-U>DeniteCursorWord -buffer-name=grep  grep<CR>
 
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
@@ -214,6 +238,9 @@ nmap  <Leader>L <Plug>(easymotion-bd-jk)
 " EasyAlign
 nmap ga <plug>(EasyAlign)
 xmap ga <plug>(EasyAlign)
+
+" Completion
+let g:deoplete#enable_at_startup = 1
 
 " Gundo
 nnoremap <leader>m :GundoToggle<CR>
