@@ -32,6 +32,7 @@ endif
 set wildmenu
 set wildmode=longest:full,full
 set tags=tags;/
+set updatetime=100
 
 " Python
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -261,6 +262,9 @@ nnoremap <leader>m :GundoToggle<CR>
 " Markdown
 au FileType markdown :set textwidth=80
 let g:vim_markdown_folding_disabled = 1
+
+" TypeScript
+let g:nvim_typescript#default_mappings = 1
 
 " Plain
 let g:PlainBufferSet = 0
