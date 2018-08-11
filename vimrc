@@ -26,7 +26,7 @@ set directory=~/.vim/swaps
 if exists("&undodir")
     set undodir=~/.vim/undo
 endif
-if $TMUX == ''
+if $TMUX != ''
     set clipboard=unnamed
 endif
 set wildmenu
@@ -254,9 +254,6 @@ nnoremap <leader>m :GundoToggle<CR>
 
 " Markdown
 au FileType markdown :set textwidth=80
-
-" Paste
-set pastetoggle=<leader>pp
 
 " Plain
 let g:PlainBufferSet = 0
