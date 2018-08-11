@@ -178,6 +178,8 @@ let g:rainbow_conf = {
             \}
 
 " Denite
+highlight DeniteMatches ctermfg=3 cterm=underline
+
 call denite#custom#option('_', {
   \ 'prompt': 'λ:',
   \ 'empty': 0,
@@ -187,11 +189,16 @@ call denite#custom#option('_', {
   \ 'auto-accel': 1,
   \ 'auto-resume': 1,
   \ 'reversed': 'true',
+  \ 'highlight_matched_range': 'DeniteMatches',
+  \ 'highlight_matched_char': 'DeniteMatches',
   \ })
 
-call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-      \ [ '.git/', '.ropeproject/', '__pycache__/',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+call denite#custom#source('file/rec', 'sorters', ['sorter/sublime'])
+call denite#custom#source('file/rec', 'matchers', ['matcher/cpsm'])
+
+call denite#custom#map('insert', '<C-P>', '<denite:move_to_previous_line>', 'noremap')
+call denite#custom#map('insert', '<C-N>', '<denite:move_to_next_line>', 'noremap')
+call denite#custom#map('insert', '<C-G>', '<denite:leave_mode>', 'noremap')
 
 if (executable('pt'))
   call denite#custom#var('file/rec', 'command',
