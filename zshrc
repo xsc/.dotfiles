@@ -39,7 +39,7 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git homebrew history tmux gpg-agent lein fasd)
+plugins=(git homebrew history tmux gpg-agent lein fasd docker-machine docker-compose docker)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -70,7 +70,13 @@ export LANG=en_US.UTF-8
 export LEIN_FAST_TRAMPOLINE=1
 
 # docker
-eval "$(docker-machine env default)"
+if [ -x "$(command -v docker-machine)" ]; then
+  eval "$(docker-machine env default 2> /dev/null)"
+fi
+
+if [ -x "$(command -v minishift)" ]; then
+  eval $(minishift oc-env 2> /dev/null)
+fi
 
 # istheinternetonfire
 if [ $[$RANDOM % 100] -lt 10 ]; then
@@ -129,6 +135,3 @@ function initNvm() {
 
 export PATH="$HOME/.yarn/bin:$PATH"
 
-if [ -x "$(command -v minishift)" ]; then
-  eval $(minishift oc-env)
-fi
