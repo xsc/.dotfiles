@@ -222,8 +222,8 @@ if (executable('pt'))
 endif
 
 nnoremap <C-P>      :<C-U>DeniteProjectDir -buffer-name=files file/rec<CR>
-nnoremap <C-I><C-P> :<C-U>DeniteProjectDir -buffer-name=grep  grep<CR>
-nnoremap <C-I><C-I> :<C-U>DeniteCursorWord -buffer-name=grep  grep<CR>
+nnoremap <C-_>      :<C-U>DeniteCursorWord -buffer-name=grep  grep<CR>
+nnoremap <C-I><C-I> :<C-U>Denite           -buffer-name=buffers buffer<CR>
 
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
