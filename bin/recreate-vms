@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -u
+
+DOCKER_MACHINE="default"
+
+echo "Removing current VMs ..."
+docker-machine stop "$DOCKER_MACHINE" 2> /dev/null
+docker-machine rm "$DOCKER_MACHINE" 2> /dev/null
+minishift stop 2> /dev/null
+minishift delete 2> /dev/null
+
+set -e
+echo "Creating new Docker VM ..."
+docker-machine create \
+    -d virtualbox \
+    --virtualbox-disk-size 20000 \
+    --virtualbox-memory 4096 \
+    --virtualbox-cpu-count 2 \
+    "$DOCKER_MACHINE"
+eval $(docker-machine env "$DOCKER_MACHINE")
+
+echo "Starting up Minishift VM ..."
+minishift start
+eval $(minishift oc-env)
