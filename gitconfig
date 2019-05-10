@@ -55,7 +55,7 @@
     merged-when = "!f() { git rev-list -1 --format=%p \"$1\" | grep -v commit | xargs -I {} sh -c 'git rev-list -1 --format=\"%ci\" {}' | grep -v commit; }; f"
     merged-when-relative = "!f() { git rev-list -1 --format=%p \"$1\" | grep -v commit | xargs -I {} sh -c 'git rev-list -1 --format=\"%cr\" {}' | grep -v commit; }; f"
 
-    cleanup = "!git branch --merged | grep -v '^  master$' | grep -v '^\\*' | xargs git branch -d"
+    cleanup = "!git branch --merged | grep -v '^  master$' | grep -v '^  develop$' | grep -v '^\\*' | xargs git branch -d"
     cleanup-remote = "!f() {\
         local remote=\"$1\";\
         local pattern=\"$2\";\
@@ -67,6 +67,7 @@
             git branch -r --merged|\
             grep \"^  $remote/\"|\
             grep -v \"$remote/master\\$\"|\
+            grep -v \"$remote/develop\\$\"|\
             grep -e \"$pattern\"|\
             sed \"s/^  $remote\\///\"\
         );\
@@ -76,7 +77,7 @@
         done;\
         read -p \"Are you sure? \" -n 1 -r; echo;\
         if [[ $REPLY =~ ^[Yy]$ ]]; then\
-            echo $branches | xargs git push \"$remote\" --delete;\
+            echo $branches | xargs git push \"$remote\" --no-verify --delete;\
         fi;}; f"
     br = branch
     brm = branch --no-merged
