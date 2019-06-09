@@ -55,7 +55,6 @@ noremap q: :q
 
 " Force my Hand
 inoremap jj <ESC>
-inoremap <ESC> <NOP>
 noremap <UP> <NOP>
 noremap <DOWN> <NOP>
 noremap <LEFT> <NOP>
@@ -100,22 +99,21 @@ call plug#begin('~/.vim/plugged')
     Plug 'ludovicchabant/vim-gutentags'
 
     " Completion
-    Plug 'Shougo/deoplete.nvim', {'do' : ':UpdateRemotePlugins', 'for': 'typescript'}
+    Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
     Plug 'Shougo/denite.nvim'
 
     " Clojure
     Plug 'tpope/vim-dispatch'
     Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-salve'
-    Plug 'tpope/vim-sexp-mappings-for-regular-people'
     Plug 'tpope/vim-projectionist'
-    Plug 'guns/vim-clojure-static'
+    "Plug 'guns/vim-clojure-static'
     Plug 'guns/vim-sexp'
+    Plug 'tpope/vim-sexp-mappings-for-regular-people'
     Plug 'luochen1990/rainbow'
 
     " TypeScript
     Plug 'HerringtonDarkholme/yats.vim'
-    Plug 'mhartington/nvim-typescript', {'do': './install.sh', 'for': 'typescript'}
 
     " GraphQL
     Plug 'jparise/vim-graphql'
@@ -133,8 +131,6 @@ if (exists('+colorcolumn'))
     set colorcolumn=80
     highlight ColorColumn ctermbg=254
 endif
-
-" Clojure
 
 function! SetupClojure()
     " vim-fireplace + vim-sexp
@@ -200,7 +196,7 @@ call denite#custom#option('_', {
   \ 'highlight_matched_char': 'DeniteMatches',
   \ })
 
-call denite#custom#source('file/rec', 'sorters', ['sorter/sublime'])
+call denite#custom#source('file/rec', 'sorters', ['sorter/rank'])
 call denite#custom#source('file/rec', 'matchers', ['matcher/cpsm'])
 
 call denite#custom#map('insert', '<C-P>', '<denite:move_to_previous_line>', 'noremap')
@@ -210,20 +206,21 @@ call denite#custom#map('insert', '<C-G>', '<denite:leave_mode>', 'noremap')
 if (executable('pt'))
   call denite#custom#var('file/rec', 'command',
     \ ['pt', '--follow', '--nocolor', '--nogroup',
+    \  '--global-gitignore', '--ignore=node_modules',
     \  (has('win32') ? '-g:' : '-g='), ''])
 
   call denite#custom#var('grep', 'command', ['pt'])
   call denite#custom#var('grep', 'default_opts',
-    \ ['--nogroup', '--nocolor', '--smart-case'])
+    \ ['--nogroup', '--nocolor', '--smart-case', '--global-gitignore'])
   call denite#custom#var('grep', 'recursive_opts', [])
-  call denite#custom#var('grep', 'pattern_opt', [])
+  call denite#custom#var('grep', 'pattern_opt', ['--ignore=node_modules'])
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
 endif
 
-nnoremap <C-P>      :<C-U>DeniteProjectDir -buffer-name=files file/rec<CR>
-nnoremap <C-_>      :<C-U>DeniteCursorWord -buffer-name=grep  grep<CR>
-nnoremap <C-I><C-I> :<C-U>Denite           -buffer-name=buffers buffer<CR>
+nnoremap <C-P>      :<C-U>Denite -buffer-name=files file/rec<CR>
+nnoremap <C-_>      :<C-U>Denite -buffer-name=grep grep<CR>
+nnoremap <C-I><C-I> :<C-U>Denite -buffer-name=buffers buffer<CR>
 
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
@@ -253,18 +250,12 @@ nmap  <Leader>L <Plug>(easymotion-bd-jk)
 nmap ga <plug>(EasyAlign)
 xmap ga <plug>(EasyAlign)
 
-" Completion
-let g:deoplete#enable_at_startup = 1
-
 " Gundo
 nnoremap <leader>m :GundoToggle<CR>
 
 " Markdown
 au FileType markdown :set textwidth=80
 let g:vim_markdown_folding_disabled = 1
-
-" TypeScript
-let g:nvim_typescript#default_mappings = 1
 
 " Plain
 let g:PlainBufferSet = 0
@@ -281,3 +272,28 @@ function! PlainBuffer()
 endfu
 
 nmap <Leader>P :call PlainBuffer()<CR>
+
+" Language Server (coc)
+set updatetime=300
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+nmap <silent> gc <Plug>(coc-diagnostic-info)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+
+" Prettier
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
