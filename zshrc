@@ -70,12 +70,8 @@ export LANG=en_US.UTF-8
 export LEIN_FAST_TRAMPOLINE=1
 
 # docker
-if [ -x "$(command -v docker-machine)" ]; then
+if [ -x "$(command -v docker-machine)" ] && [ "$(docker-machine status default)" = "Running" ]; then
   eval "$(docker-machine env default 2> /dev/null)"
-fi
-
-if [ -x "$(command -v minishift)" ]; then
-  eval $(minishift oc-env 2> /dev/null)
 fi
 
 # istheinternetonfire
@@ -128,10 +124,15 @@ alias vim=nvim
 export EDITOR=nvim
 export VISUAL=nvim
 
-export NVM_DIR="$HOME/.nvm"
-function initNvm() {
-  source "/usr/local/opt/nvm/nvm.sh"
-}
+## NVM
+NVM_INIT="/usr/local/opt/nvm/nvm.sh"
+loadNvm() { source "$NVM_INIT" }
+
+if [ -s "$NVM_INIT" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  alias nvm='unalias nvm node npm && loadNvm && nvm'
+  alias node='unalias nvm node npm && loadNvm && node'
+  alias npm='unalias nvm node npm && loadNvm && npm'
+fi
 
 export PATH="$HOME/.yarn/bin:$PATH"
-
