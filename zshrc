@@ -39,7 +39,7 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git homebrew history tmux gpg-agent lein fasd docker-machine docker-compose docker)
+plugins=(git brew history tmux gpg-agent lein fasd docker-machine docker-compose docker git-prompt)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -80,8 +80,6 @@ if [ $[$RANDOM % 100] -lt 10 ]; then
 fi
 
 ## Prompt
-source $HOME/.zsh-prompt/zshrc.sh
-
 function collapse_pwd {
     echo $(pwd | sed -e "s,^$HOME,~,")
 }
