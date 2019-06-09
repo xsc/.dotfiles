@@ -22,7 +22,7 @@ LEIN="$(which lein)"
 LEIN_BUMP="change version leiningen.release/bump-version"
 LEVEL=""
 PREFIX=""
-DEPLOY="false"
+DEPLOY=""
 PUSH="false"
 FORCE="false"
 TAG="true"
@@ -51,16 +51,18 @@ fi
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        major|minor)
-            LEVEL="$1";
+        --major)
+            LEVEL="major";
             shift;;
-        clojars)
-            REPOSITORY="clojars";
-            DEPLOY="true";
+        --minor)
+            LEVEL="minor";
             shift;;
         --deploy)
-            DEPLOY="true";
+            if [ -z "$DEPLOY"]; then DEPLOY="deploy"; fi
             shift;;
+        --deploy-with)
+            DEPLOY="$2"
+            shift; shift;;
         --push)
             PUSH="true";
             shift;;
@@ -91,7 +93,7 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-if [ x$DEPLOY = xtrue -a ! -z "$UBERJAR" ]; then
+if [ ! -z "$DEPLOY" -a ! -z "$UBERJAR" ]; then
     echo "Can either deploy _OR_ create an Uberjar, not both." 1>&2;
     exit 1;
 fi
@@ -180,8 +182,8 @@ if [ x$TAG = xtrue ]; then
     with_commit_rollback $LEIN vcs tag "$PREFIX"
 fi
 
-if [ x$DEPLOY = xtrue ]; then
-    with_rollback $LEIN deploy $REPOSITORY
+if [ ! -z "$DEPLOY" ]; then
+    with_rollback $LEIN $DEPLOY $REPOSITORY
 fi
 
 if [ ! -z "$UBERJAR" ]; then
