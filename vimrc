@@ -53,13 +53,6 @@ nnoremap <F6> :set number!<CR>
 noremap <leader>ss :w !sudo tee % > /dev/null<CR>
 noremap q: :q
 
-" Force my Hand
-inoremap jj <ESC>
-noremap <UP> <NOP>
-noremap <DOWN> <NOP>
-noremap <LEFT> <NOP>
-noremap <RIGHT> <NOP>
-
 " Navigate Splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -76,8 +69,7 @@ endif
 call plug#begin('~/.vim/plugged')
     " Theme
     Plug 'altercation/vim-colors-solarized'
-    Plug 'bling/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    Plug 'itchyny/lightline.vim'
 
     " Format & Move
     Plug 'junegunn/vim-easy-align'
@@ -96,11 +88,15 @@ call plug#begin('~/.vim/plugged')
     " Utils
     Plug 'Shougo/vimproc.vim', {'do' : 'make'}
     Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-eunuch'
+    Plug 'tpope/vim-surround'
+    Plug 'editorconfig/editorconfig-vim'
     Plug 'ludovicchabant/vim-gutentags'
 
     " Completion
     Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-    Plug 'Shougo/denite.nvim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
 
     " Clojure
     Plug 'tpope/vim-dispatch'
@@ -132,6 +128,11 @@ if (exists('+colorcolumn'))
     highlight ColorColumn ctermbg=254
 endif
 
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+  \ }
+
+" Clojure
 function! SetupClojure()
     " vim-fireplace + vim-sexp
     nmap <buffer> cee :%Eval<CR>
@@ -180,48 +181,6 @@ let g:rainbow_conf = {
             \   }
             \}
 
-" Denite
-highlight DeniteMatches ctermfg=3 cterm=underline
-
-call denite#custom#option('_', {
-  \ 'prompt': 'λ:',
-  \ 'empty': 0,
-  \ 'winheight': 10,
-  \ 'source_names': 'short',
-  \ 'vertical_preview': 1,
-  \ 'auto-accel': 1,
-  \ 'auto-resume': 1,
-  \ 'reversed': 'true',
-  \ 'highlight_matched_range': 'DeniteMatches',
-  \ 'highlight_matched_char': 'DeniteMatches',
-  \ })
-
-call denite#custom#source('file/rec', 'sorters', ['sorter/rank'])
-call denite#custom#source('file/rec', 'matchers', ['matcher/cpsm'])
-
-call denite#custom#map('insert', '<C-P>', '<denite:move_to_previous_line>', 'noremap')
-call denite#custom#map('insert', '<C-N>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('insert', '<C-G>', '<denite:leave_mode>', 'noremap')
-
-if (executable('pt'))
-  call denite#custom#var('file/rec', 'command',
-    \ ['pt', '--follow', '--nocolor', '--nogroup',
-    \  '--global-gitignore', '--ignore=node_modules',
-    \  (has('win32') ? '-g:' : '-g='), ''])
-
-  call denite#custom#var('grep', 'command', ['pt'])
-  call denite#custom#var('grep', 'default_opts',
-    \ ['--nogroup', '--nocolor', '--smart-case', '--global-gitignore'])
-  call denite#custom#var('grep', 'recursive_opts', [])
-  call denite#custom#var('grep', 'pattern_opt', ['--ignore=node_modules'])
-  call denite#custom#var('grep', 'separator', ['--'])
-  call denite#custom#var('grep', 'final_opts', [])
-endif
-
-nnoremap <C-P>      :<C-U>Denite -buffer-name=files file/rec<CR>
-nnoremap <C-_>      :<C-U>Denite -buffer-name=grep grep<CR>
-nnoremap <C-I><C-I> :<C-U>Denite -buffer-name=buffers buffer<CR>
-
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gc :Gcommit<CR>
@@ -234,6 +193,8 @@ nnoremap <leader>gw :Gwrite<CR>
 
 " GitGutter
 nnoremap <leader>gg :GitGutterToggle<CR>
+nmap ]c <Plug>GitGutterNextHunk
+nmap [c <Plug>GitGutterPrevHunk
 highlight GitGutterAdd    ctermfg=2 ctermbg=7
 highlight GitGutterChange ctermfg=3 ctermbg=7
 highlight GitGutterDelete ctermfg=1 ctermbg=7
@@ -289,11 +250,36 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-nmap <silent> gc <Plug>(coc-diagnostic-info)
+nmap <silent> [h <Plug>(coc-diagnostic-prev)
+nmap <silent> ]h <Plug>(coc-diagnostic-next)
+nmap <silent> gh <Plug>(coc-diagnostic-info)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 
 " Prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" Fuzzy Finder
+let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+if executable('rg')
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob "!.git"'
+  noremap <C-B> :Rg<CR>
+endif
+
+noremap <C-P>      :Files<CR>
+noremap <C-I><C-I> :Buffers<CR>
