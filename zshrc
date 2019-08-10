@@ -39,7 +39,7 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git brew history tmux gpg-agent lein fasd docker-machine docker-compose docker git-prompt)
+plugins=(git brew history tmux gpg-agent lein fasd docker-machine docker-compose docker git-prompt cargo rust)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -68,11 +68,6 @@ alias rma='rm *'
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LEIN_FAST_TRAMPOLINE=1
-
-# docker
-if [ -x "$(command -v docker-machine)" ] && [ "$(docker-machine status default)" = "Running" ]; then
-  eval "$(docker-machine env default 2> /dev/null)"
-fi
 
 # istheinternetonfire
 if [ $[$RANDOM % 100] -lt 10 ]; then
@@ -134,4 +129,4 @@ if [ -s "$NVM_INIT" ]; then
   alias npm='unalias nvm node npm && loadNvm && npm'
 fi
 
-export PATH="$HOME/.yarn/bin:$PATH"
+export PATH="$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH"
