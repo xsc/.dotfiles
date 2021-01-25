@@ -211,9 +211,6 @@ nmap  <Leader>L <Plug>(easymotion-bd-jk)
 nmap ga <plug>(EasyAlign)
 xmap ga <plug>(EasyAlign)
 
-" Gundo
-nnoremap <leader>m :GundoToggle<CR>
-
 " Markdown
 au FileType markdown :set textwidth=80
 let g:vim_markdown_folding_disabled = 1
@@ -279,7 +276,14 @@ let g:fzf_colors =
 if executable('rg')
   let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob "!.git"'
   noremap <C-B> :Rg<CR>
+  let g:gutentags_file_list_command = 'rg --files'
 endif
 
-noremap <C-P>      :Files<CR>
-noremap <C-I><C-I> :Buffers<CR>
+noremap <C-P>            :Files<CR>
+noremap <leader>b        :Buffers<CR>
+noremap <leader><leader> :Rg<CR>
+
+" To maintain vim-tmux-navigator functionality, C-I (which also maps to TAB)
+" is remapped to C-L in tmux.conf. This breaks TAB in insert mode, so we need
+" to fix it.
+inoremap <C-L> <TAB>
