@@ -127,6 +127,9 @@ if [ -s "$NVM_INIT" ]; then
   alias nvm='unalias nvm node npm && loadNvm && nvm'
   alias node='unalias nvm node npm && loadNvm && node'
   alias npm='unalias nvm node npm && loadNvm && npm'
+  alias aws-azure-login='unalias nvm node npm && loadNvm && aws-azure-login'
 fi
 
-export PATH="$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH:$HOME/.vim/plugged/vim-iced/bin"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

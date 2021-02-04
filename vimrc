@@ -59,6 +59,9 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Colemak hack
+nnoremap <C-I> :TmuxNavigateRight<CR>
+
 " Plugins
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -94,29 +97,20 @@ call plug#begin('~/.vim/plugged')
     Plug 'ludovicchabant/vim-gutentags'
 
     " Completion
-    Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
 
     " Clojure
-    Plug 'tpope/vim-dispatch'
-    Plug 'tpope/vim-fireplace'
-    Plug 'tpope/vim-salve'
-    Plug 'tpope/vim-projectionist'
-    "Plug 'guns/vim-clojure-static'
-    Plug 'guns/vim-sexp'
-    Plug 'tpope/vim-sexp-mappings-for-regular-people'
-    Plug 'luochen1990/rainbow'
-
-    " TypeScript
-    Plug 'HerringtonDarkholme/yats.vim'
-
-    " GraphQL
-    Plug 'jparise/vim-graphql'
+    Plug 'guns/vim-sexp',    {'for': 'clojure'}
+    Plug 'liquidz/vim-iced', {'for': 'clojure'}
+    Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
 
     " Markdown
     Plug 'plasticboy/vim-markdown'
 call plug#end()
+
+" Clojure
+let g:iced_enable_default_key_mappings = v:true
 
 " Appearance
 set background=light
@@ -131,55 +125,6 @@ endif
 let g:lightline = {
       \ 'colorscheme': 'solarized',
   \ }
-
-" Clojure
-function! SetupClojure()
-    " vim-fireplace + vim-sexp
-    nmap <buffer> cee :%Eval<CR>
-    nmap <buffer> css :Eval<CR>
-    nmap <buffer> ctt :RunTests<CR>
-    nmap <buffer> cpc :cclose<CR>
-    nmap <buffer> caa :A<CR>
-    nmap <buffer> cac :AV<CR>
-    nmap <buffer> crc :silent unlet g:salve_auto_start_repl<CR>:Connect nrepl://
-    nmap <buffer> <Leader>S  <Leader>@
-
-    " vim-clojure-static
-    if !exists('g:clojure_loaded')
-        let g:clojure_fuzzy_indent = 1
-        let g:clojure_align_multiline_strings = 1
-        let g:clojure_loaded = 1
-    endif
-
-    let g:salve_auto_start_repl = 1
-endfu
-autocmd BufNewFile,BufRead *.cljx set filetype=clojure
-autocmd FileType clojure :call SetupClojure()
-
-" rainbow
-let g:rainbow_active = 1
-let g:rainbow_conf = {
-            \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-            \   'ctermfgs': ['darkyellow', 'darkred', 'darkblue', 'darkcyan', 'darkmagenta', 'darkblue'],
-            \   'operators': '_,_',
-            \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-            \   'separately': {
-            \       '*': {},
-            \       'clojure': {
-            \           'ctermfgs': ['darkred', 'darkcyan', 'darkyellow', 'darkblue', 'darkcyan', 'darkmagenta', 'darkblue'],
-            \       },
-            \       'tex': {
-            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-            \       },
-            \       'vim': {
-            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-            \       },
-            \       'html': {
-            \           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-            \       },
-            \       'css': 0,
-            \   }
-            \}
 
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
