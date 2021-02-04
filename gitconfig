@@ -66,8 +66,10 @@
         local branches=$(\
             git branch -r --merged|\
             grep \"^  $remote/\"|\
+            grep -v \"$remote/HEAD ->\"|\
             grep -v \"$remote/master\\$\"|\
             grep -v \"$remote/develop\\$\"|\
+            grep -v \"$remote/development\\$\"|\
             grep -e \"$pattern\"|\
             sed \"s/^  $remote\\///\"\
         );\
@@ -164,3 +166,8 @@
     whitespace = fix
 [web]
     browser = open
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
