@@ -130,6 +130,10 @@ if [ -s "$NVM_INIT" ]; then
   alias aws-azure-login='unalias nvm node npm && loadNvm && aws-azure-login'
 fi
 
-export PATH="$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH:$HOME/.vim/plugged/vim-iced/bin"
+## Clojure
+alias iced="iced repl with-profile +iced,+kaocha"
 
+## Path
+
+export PATH="$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH:$HOME/.vim/plugged/vim-iced/bin"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

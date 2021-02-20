@@ -96,6 +96,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'editorconfig/editorconfig-vim'
     Plug 'ludovicchabant/vim-gutentags'
 
+    " CoC
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'josa42/vim-lightline-coc'
+
     " Completion
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
@@ -109,12 +113,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'plasticboy/vim-markdown'
 call plug#end()
 
-" Clojure
-let g:iced_enable_default_key_mappings = v:true
-
 " Appearance
 set background=light
 silent! colorscheme solarized
+highlight! link SignColumn LineNr
 let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'grep', 'search']
 
 if (exists('+colorcolumn'))
@@ -124,7 +126,24 @@ endif
 
 let g:lightline = {
       \ 'colorscheme': 'solarized',
-  \ }
+      \ 'active': {
+      \     'left': [ [ 'mode', 'paste' ],
+      \               [ 'coc_info', 'coc_hints', 'coc_errors', 'coc_warnings' ],
+      \               [ 'coc_status' ]]
+      \ },
+      \ }
+call lightline#coc#register()
+
+" CoC
+nmap <silent> <leader>cc <Plug>(coc-diagnostic-next)
+
+" Clojure
+let g:iced_enable_default_key_mappings = v:true
+let g:iced_enable_auto_indent = v:false
+aug VimIced
+  au!
+  au FileType clojure nmap <buffer> <leader>e! <Plug>(iced_eval_and_comment)<Plug>(sexp_outer_list)
+aug end
 
 " Fugitive
 nnoremap <leader>gb :Gblame<CR>
@@ -138,8 +157,8 @@ nnoremap <leader>gw :Gwrite<CR>
 
 " GitGutter
 nnoremap <leader>gg :GitGutterToggle<CR>
-nmap ]c <Plug>GitGutterNextHunk
-nmap [c <Plug>GitGutterPrevHunk
+nmap ]c <Plug>(GitGutterNextHunk)
+nmap [c <Plug>(GitGutterPrevHunk)
 highlight GitGutterAdd    ctermfg=2 ctermbg=7
 highlight GitGutterChange ctermfg=3 ctermbg=7
 highlight GitGutterDelete ctermfg=1 ctermbg=7
@@ -175,28 +194,6 @@ function! PlainBuffer()
 endfu
 
 nmap <Leader>P :call PlainBuffer()<CR>
-
-" Language Server (coc)
-set updatetime=300
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-nmap <silent> [h <Plug>(coc-diagnostic-prev)
-nmap <silent> ]h <Plug>(coc-diagnostic-next)
-nmap <silent> gh <Plug>(coc-diagnostic-info)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
 
 " Prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
