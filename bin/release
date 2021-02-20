@@ -57,6 +57,9 @@ while [ $# -gt 0 ]; do
         --minor)
             LEVEL="minor";
             shift;;
+        --rc)
+            LEVEL="rc";
+            shift;;
         --deploy)
             if [ -z "$DEPLOY"]; then DEPLOY="deploy"; fi
             shift;;
