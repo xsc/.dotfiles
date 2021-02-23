@@ -95,6 +95,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'ludovicchabant/vim-gutentags'
+    Plug 'tpope/vim-projectionist'
 
     " CoC
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -136,6 +137,22 @@ call lightline#coc#register()
 
 " CoC
 nmap <silent> <leader>cc <Plug>(coc-diagnostic-next)
+
+" Projectionist
+nmap <silent> <leader>gt :AV<CR>
+
+let g:projectionist_heuristics = {
+      \   'project.clj': {
+      \     'src/*.clj':
+      \       {'type': 'source', 'alternate': 'test/{}_test.clj', 'template': ['(ns {dot|hyphenate})']},
+      \     'src/*.cljc':
+      \       {'type': 'source', 'alternate': 'test/{}_test.cljc', 'template': ['(ns {dot|hyphenate})']},
+      \     'test/*_test.clj':
+      \       {'type': 'test', 'alternate': 'src/{}.clj', 'template': ['(ns {dot|hyphenate})']},
+      \     'test/*_test.cljc':
+      \       {'type': 'test', 'alternate': 'src/{}.cljc', 'template': ['(ns {dot|hyphenate})']},
+      \   }
+      \ }
 
 " Clojure
 let g:iced_enable_default_key_mappings = v:true
