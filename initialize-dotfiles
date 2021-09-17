@@ -14,7 +14,7 @@ while [[ "$#" > 0 ]]; do
     esac
 done
 
-for f in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "initialize-dotfiles"); do
+for f in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -vE "initialize-dotfiles|keylayout"); do
 
     # Destination
     dir=$(dirname "$f")
@@ -54,3 +54,6 @@ for f in $(cd "$BASE" && find "." -type f -not -path "*/.git/*" | grep -v "initi
         exit 1;
     fi
 done
+
+# Key Layout
+cp $BASE/keylayout/EurKEY.* "$HOME/Library/Keyboard Layouts"
