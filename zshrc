@@ -39,7 +39,9 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git brew history tmux gpg-agent lein fasd docker-machine docker-compose docker git-prompt cargo rust)
+plugins=(git brew history tmux gpg-agent lein fasd docker-compose docker git-prompt z)
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 source $ZSH/oh-my-zsh.sh
 
