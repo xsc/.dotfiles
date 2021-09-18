@@ -198,8 +198,8 @@ $LEIN $LEIN_BUMP
 $LEIN vcs commit
 
 if [ x$PUSH = xtrue ]; then
-    git push origin master --tags
+    git push origin $CURRENT_BRANCH --tags
     echo "Artifact was released."
 else
-    echo -e "Check that all went fine and then\n  git push origin master --tags"
+    echo -e "Check that all went fine and then\n  git push origin $CURRENT_BRANCH --tags"
 fi
