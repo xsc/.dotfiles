@@ -55,7 +55,7 @@
     merged-when = "!f() { git rev-list -1 --format=%p \"$1\" | grep -v commit | xargs -I {} sh -c 'git rev-list -1 --format=\"%ci\" {}' | grep -v commit; }; f"
     merged-when-relative = "!f() { git rev-list -1 --format=%p \"$1\" | grep -v commit | xargs -I {} sh -c 'git rev-list -1 --format=\"%cr\" {}' | grep -v commit; }; f"
 
-    cleanup = "!git branch --merged | grep -v '^  master$' | grep -v '^  develop$' | grep -v '^\\*' | xargs git branch -d"
+    cleanup = "!git branch --merged | grep -v '^  master$' | grep -v '^  main$' | grep -v '^  develop$' | grep -v '^\\*' | xargs git branch -d"
     cleanup-remote = "!f() {\
         local remote=\"$1\";\
         local pattern=\"$2\";\
@@ -68,6 +68,7 @@
             grep \"^  $remote/\"|\
             grep -v \"$remote/HEAD ->\"|\
             grep -v \"$remote/master\\$\"|\
+            grep -v \"$remote/main\\$\"|\
             grep -v \"$remote/develop\\$\"|\
             grep -v \"$remote/development\\$\"|\
             grep -e \"$pattern\"|\
