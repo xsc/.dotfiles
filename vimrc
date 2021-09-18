@@ -31,7 +31,6 @@ if $TMUX != ''
 endif
 set wildmenu
 set wildmode=longest:full,full
-set tags=tags;/
 set updatetime=100
 
 " Python
@@ -94,7 +93,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-eunuch'
     Plug 'tpope/vim-surround'
     Plug 'editorconfig/editorconfig-vim'
-    Plug 'ludovicchabant/vim-gutentags'
     Plug 'tpope/vim-projectionist'
 
     " CoC
@@ -234,8 +232,6 @@ let g:fzf_colors =
 
 if executable('rg')
   let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --iglob "!.git"'
-  noremap <C-B> :Rg<CR>
-  let g:gutentags_file_list_command = 'rg --files'
 endif
 
 noremap <C-P>            :Files<CR>

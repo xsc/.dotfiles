@@ -39,9 +39,7 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git brew history tmux gpg-agent lein fasd docker-compose docker git-prompt z)
-
-eval "$(/opt/homebrew/bin/brew shellenv)"
+plugins=(git history tmux gpg-agent lein fasd docker-compose docker git-prompt z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -117,25 +115,13 @@ bindkey -M vicmd v edit-command-line
 
 ## Vim
 alias vim=nvim
+alias ctags="$(brew --prefix)/bin/ctags"
 export EDITOR=nvim
 export VISUAL=nvim
-
-## NVM
-NVM_INIT="/usr/local/opt/nvm/nvm.sh"
-loadNvm() { source "$NVM_INIT" }
-
-if [ -s "$NVM_INIT" ]; then
-  export NVM_DIR="$HOME/.nvm"
-  alias nvm='unalias nvm node npm && loadNvm && nvm'
-  alias node='unalias nvm node npm && loadNvm && node'
-  alias npm='unalias nvm node npm && loadNvm && npm'
-  alias aws-azure-login='unalias nvm node npm && loadNvm && aws-azure-login'
-fi
 
 ## Clojure
 alias iced="iced repl with-profile +iced,+kaocha"
 
 ## Path
-
 export PATH="$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH:$HOME/.vim/plugged/vim-iced/bin"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
