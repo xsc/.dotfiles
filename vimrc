@@ -108,8 +108,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'liquidz/vim-iced', {'for': 'clojure'}
     Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
 
-    " Markdown
+    " File Formats
     Plug 'plasticboy/vim-markdown'
+    Plug 'stephpy/vim-yaml'
 call plug#end()
 
 " Appearance
@@ -135,6 +136,16 @@ call lightline#coc#register()
 
 " CoC
 nmap <silent> <leader>cc <Plug>(coc-diagnostic-next)
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 " Projectionist
 nmap <silent> <leader>gt :AV<CR>
@@ -146,9 +157,9 @@ let g:projectionist_heuristics = {
       \     'src/*.cljc':
       \       {'type': 'source', 'alternate': 'test/{}_test.cljc', 'template': ['(ns {dot|hyphenate})']},
       \     'test/*_test.clj':
-      \       {'type': 'test', 'alternate': 'src/{}.clj', 'template': ['(ns {dot|hyphenate})']},
+      \       {'type': 'test', 'alternate': 'src/{}.clj', 'template': ['(ns {dot|hyphenate}-test)']},
       \     'test/*_test.cljc':
-      \       {'type': 'test', 'alternate': 'src/{}.cljc', 'template': ['(ns {dot|hyphenate})']},
+      \       {'type': 'test', 'alternate': 'src/{}.cljc', 'template': ['(ns {dot|hyphenate}-test)']},
       \   }
       \ }
 
@@ -181,10 +192,11 @@ highlight GitGutterDelete ctermfg=1 ctermbg=7
 " EasyMotion
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_do_mapping = 0
-nmap s <Plug>(easymotion-s2)
-nmap  <Leader>f <Plug>(easymotion-f)
-nmap  <Leader>F <Plug>(easymotion-F)
-nmap  <Leader>L <Plug>(easymotion-bd-jk)
+nmap s <Plug>(easymotion-overwin-f2)
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap  <Leader>f <Plug>(easymotion-overwin-f)
+map  <Leader>L <Plug>(easymotion-bd-jk)
+nmap  <Leader>L <Plug>(easymotion-overwin-line)
 
 " EasyAlign
 nmap ga <plug>(EasyAlign)
@@ -193,6 +205,9 @@ xmap ga <plug>(EasyAlign)
 " Markdown
 au FileType markdown :set textwidth=80
 let g:vim_markdown_folding_disabled = 1
+
+" YAML
+au FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 " Plain
 let g:PlainBufferSet = 0
