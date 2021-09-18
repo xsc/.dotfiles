@@ -1,4 +1,4 @@
-{:xsc {:plugins [[lein-ancient "1.0.0-RC4-SNAPSHOT"]
+{:xsc {:plugins [[lein-ancient "1.0.0-RC3"]
                  #_[lein-try "0.4.3"]
                  [lein-license "1.0.0"]]
        :deploy-repositories
