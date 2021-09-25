@@ -45,6 +45,7 @@
     cam = commit -a -m
     amend = commit --amend
     caa = commit -a --amend -C HEAD
+    include = commit --amend --no-edit
     filelog = log -u
     fl = log -u
     sh = show --format=fuller
