@@ -43,8 +43,9 @@ plugins=(git history tmux gpg-agent lein fasd docker-compose docker git-prompt z
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH:/usr/bin:/bin:/usr/sbin:/sbin:~/.bin
+eval "$(/opt/homebrew/bin/brew shellenv)"
 export JAVA_HOME=$(/usr/libexec/java_home 2> /dev/null)
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH:/usr/bin:/bin:/usr/sbin:/sbin:~/.bin
 
 # Clear
 zsh_clear() { command clear; zle redisplay; }
@@ -123,5 +124,6 @@ export VISUAL=nvim
 alias iced="iced repl with-profile +iced,+kaocha"
 
 ## Path
+export GRAALVM_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java11-21.2.0/Contents/Home
 export PATH="$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH:$HOME/.vim/plugged/vim-iced/bin"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
