@@ -31,7 +31,7 @@ if $TMUX != ''
 endif
 set wildmenu
 set wildmode=longest:full,full
-set updatetime=100
+set updatetime=300
 
 " Python
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -71,11 +71,12 @@ endif
 call plug#begin('~/.vim/plugged')
     " Theme
     Plug 'altercation/vim-colors-solarized'
+    Plug 'lifepillar/vim-solarized8'
     Plug 'itchyny/lightline.vim'
 
     " Format & Move
     Plug 'junegunn/vim-easy-align'
-    Plug 'easymotion/vim-easymotion'
+    Plug 'phaazon/hop.nvim'
     Plug 'bronson/vim-trailing-whitespace'
     Plug 'wellle/targets.vim'
     Plug 'tpope/vim-sleuth'
@@ -96,7 +97,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-projectionist'
 
     " CoC
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'neoclide/coc.nvim', {
+          \ 'branch': 'release',
+          \ 'do': { -> coc#util#install()},
+          \ 'for': [ 'clojure' ]
+          \ }
     Plug 'josa42/vim-lightline-coc'
 
     " Completion
@@ -115,13 +120,23 @@ call plug#end()
 
 " Appearance
 set background=light
-silent! colorscheme solarized
-highlight! link SignColumn LineNr
+if (has('termguicolors'))
+    set termguicolors
+endif
+
+function! AdaptColorscheme()
+    hi! link SignColumn LineNr
+    hi! MatchParen cterm=bold ctermbg=14 gui=bold guifg=#dc322f guibg=#eee8d5
+endfunction
+
+autocmd vimenter * ++nested colorscheme solarized8
+autocmd vimenter * :call AdaptColorscheme()
+
 let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'grep', 'search']
 
 if (exists('+colorcolumn'))
     set colorcolumn=80
-    highlight ColorColumn ctermbg=254
+    highlight link ColorColumn LineNr
 endif
 
 let g:lightline = {
@@ -147,21 +162,23 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Projectionist
-nmap <silent> <leader>gt :AV<CR>
 
-let g:projectionist_heuristics = {
-      \   'project.clj': {
-      \     'src/*.clj':
-      \       {'type': 'source', 'alternate': 'test/{}_test.clj', 'template': ['(ns {dot|hyphenate})']},
-      \     'src/*.cljc':
-      \       {'type': 'source', 'alternate': 'test/{}_test.cljc', 'template': ['(ns {dot|hyphenate})']},
-      \     'test/*_test.clj':
-      \       {'type': 'test', 'alternate': 'src/{}.clj', 'template': ['(ns {dot|hyphenate}-test)']},
-      \     'test/*_test.cljc':
-      \       {'type': 'test', 'alternate': 'src/{}.cljc', 'template': ['(ns {dot|hyphenate}-test)']},
-      \   }
-      \ }
+" Projectionist
+function! s:init_projectionist()
+    nmap <silent> <leader>gt :AV<CR>
+    let g:projectionist_heuristics = {
+          \   'project.clj': {
+          \     'src/*.clj':
+          \       {'type': 'source', 'alternate': 'test/{}_test.clj', 'template': ['(ns {dot|hyphenate})']},
+          \     'src/*.cljc':
+          \       {'type': 'source', 'alternate': 'test/{}_test.cljc', 'template': ['(ns {dot|hyphenate})']},
+          \     'test/*_test.clj':
+          \       {'type': 'test', 'alternate': 'src/{}.clj', 'template': ['(ns {dot|hyphenate}-test)']},
+          \     'test/*_test.cljc':
+          \       {'type': 'test', 'alternate': 'src/{}.cljc', 'template': ['(ns {dot|hyphenate}-test)']},
+          \   }
+          \ }
+endfunction
 
 " Clojure
 let g:iced_enable_default_key_mappings = v:true
@@ -169,6 +186,8 @@ let g:iced_enable_auto_indent = v:false
 aug VimIced
   au!
   au FileType clojure nmap <buffer> <leader>e! <Plug>(iced_eval_and_comment)<Plug>(sexp_outer_list)
+  au FileType clojure nmap <buffer> <leader>gtt <Plug>(iced_cycle_src_and_test)
+  au FileType clojure nmap <buffer> <leader>gt :vs<CR><Plug>(iced_cycle_src_and_test)
 aug end
 
 " Fugitive
@@ -189,14 +208,9 @@ highlight GitGutterAdd    ctermfg=2 ctermbg=7
 highlight GitGutterChange ctermfg=3 ctermbg=7
 highlight GitGutterDelete ctermfg=1 ctermbg=7
 
-" EasyMotion
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_do_mapping = 0
-nmap s <Plug>(easymotion-overwin-f2)
-map  <Leader>f <Plug>(easymotion-bd-f)
-nmap  <Leader>f <Plug>(easymotion-overwin-f)
-map  <Leader>L <Plug>(easymotion-bd-jk)
-nmap  <Leader>L <Plug>(easymotion-overwin-line)
+" Hop
+lua require'hop'.setup()
+nmap <silent> s :HopChar2<CR>
 
 " EasyAlign
 nmap ga <plug>(EasyAlign)
