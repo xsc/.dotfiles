@@ -1,5 +1,11 @@
 # To install source this file from your .zshrc file
 
+# asciinema: Short prompt
+
+if [ "$ASCIINEMA_REC" -eq "1" ]; then
+    exit;
+fi
+
 # see documentation at http://linux.die.net/man/1/zshexpn
 # A: finds the absolute path, even if this is symlinked
 # h: equivalent to dirname
