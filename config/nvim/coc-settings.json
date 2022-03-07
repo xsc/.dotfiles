@@ -3,9 +3,10 @@
         "clj_kondo_lint": {
             "command": "clj-kondo",
             "debounce": 100,
-            "args": [ "--lint", "%filepath"],
+            "args": [ "--lint", "%filepath" ],
             "offsetLine": 0,
             "offsetColumn": 0,
+            "offsetColumnEnd": 1,
             "sourceName": "clj-kondo",
             "formatLines": 1,
             "formatPattern": [
@@ -13,6 +14,7 @@
                 {
                     "line": 1,
                     "column": 2,
+                    "endColumn": 2,
                     "message": 4,
                     "security": 3
                 }
