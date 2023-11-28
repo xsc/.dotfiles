@@ -32,6 +32,7 @@ endif
 set wildmenu
 set wildmode=longest:full,full
 set updatetime=300
+set mouse=
 
 " Python
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -51,6 +52,15 @@ nnoremap <C-Space> :nohl<CR>
 nnoremap <F6> :set number!<CR>
 noremap <leader>ss :w !sudo tee % > /dev/null<CR>
 noremap q: :q
+
+" Autocomplete
+set completeopt=menu,noinsert,preview
+inoremap <expr><CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Navigate Splits
 nnoremap <C-J> <C-W><C-J>
@@ -151,11 +161,6 @@ call lightline#coc#register()
 
 " CoC
 nmap <silent> <leader>cc <Plug>(coc-diagnostic-next)
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
